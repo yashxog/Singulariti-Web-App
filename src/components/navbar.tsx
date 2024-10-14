@@ -45,10 +45,6 @@ export const Navbar = ({messages}: {messages: Message[]}) => {
           <p className="max-w-[50%] truncate text-center">{title}</p>
           
           <div className="flex items-center space-x-4">
-            <Share
-              size={17}
-              className="active:scale-95 transition duration-100 cursor-pointer"
-            />
             <Trash
               size={17}
               className="text-red-400 active:scale-95 transition duration-100 cursor-pointer"
@@ -56,6 +52,7 @@ export const Navbar = ({messages}: {messages: Message[]}) => {
             <LogOut
               size={17}
               onClick={() => signOut()}
+              className="active:scale-95 transition duration-100 cursor-pointer"
             />
           </div>
         </div>
