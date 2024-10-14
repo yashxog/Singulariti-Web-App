@@ -6,6 +6,9 @@ import { useSelectedLayoutSegments } from 'next/navigation';
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip"
 import Link from 'next/link';
 import Layout from './layout';
+import SingularityPlaygroundLogo from "../assets/singularity_playground_logo.png";
+import Image from 'next/image';
+
 
 const Sidebar = ({ children }: { children: React.ReactNode }) => {
     const segments = useSelectedLayoutSegments();
@@ -32,9 +35,9 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
            <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
                   <Link
                       href="#"
-                      className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
+                      className="group flex h-14 w-14 shrink-0 items-center justify-center gap-2 rounded-lg bg-primary text-lg font-semibold text-primary-foreground md:h-10 md:w-10 md:text-base"
                   >
-                      <Package2 className="h-4 w-4 transition-all group-hover:scale-110" />
+                      <Image src={SingularityPlaygroundLogo} alt="logo of singularity playground"/>
                       <span className="sr-only">Acme Inc</span>
                   </Link>
                   </nav>

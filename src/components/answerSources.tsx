@@ -105,7 +105,7 @@ export const AnswerSources = ({ sources }: { sources: Document[] }) => {
                   <div className="flex flex-col space-y-4">
                     {sources.map((source, i) => (
                       <a
-                        className="h-28 bg-custom-bg-1 hover:bg-custom-bg-2 dark:bg-custom-bg-1 dark:hover:bg-custom-bg-2 bg-opacity-30 border border-borderColour1 dark:border-borderColour1 transition duration-200 rounded-lg p-3 flex flex-col space-y-2 font-medium"
+                        className="h-28 bg-custom-bg-1 hover:bg-custom-bg-2 dark:bg-custom-bg-1 dark:hover:bg-custom-bg-2 bg-opacity-30 border border-borderColour1 border-opacity-30 dark:border-borderColour1 dark:border-opacity-30 transition duration-200 rounded-lg p-3 flex flex-col space-y-2 font-medium"
                         key={i}
                         href={source.metadata.url}
                         target="_blank"
