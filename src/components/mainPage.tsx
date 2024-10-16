@@ -22,9 +22,16 @@ export type Message = {
     suggestions?: string[];
     sources?: Document[];
   }
+
+  // this is just to skip error of type until we dont add chats API
+  type Msg = {
+    messageId: string;
+    content: string;
+    metadata: string;
+  }
   
-  const wsURL = process.env.WEB_SOCKET_URL || "ws://localhost:8200";
-  const backendAPI = process.env.BACKEND_API_URL || "http://localhost:8200/singulariti";
+  const wsURL = process.env.NEXT_PUBLIC_WEB_SOCKET_URL || "ws://localhost:8200";
+  const backendAPI = process.env.NEXT_PUBLIC_BACKEND_API_URL || "http://localhost:8200/singulariti";
 
   const useSocket = (url: string, setIsWsReady: (ready: boolean) => void, setError: (error: boolean) => void) => {
   const [ws,setWs] =  useState<WebSocket | null>(null);
@@ -53,7 +60,7 @@ export type Message = {
               },
             ).then(async (res) => await res.json());
   
-            const chatModelProviders = providers.chatModelProviders;
+            // const chatModelProviders = providers.chatModelProviders;
             const embeddingModelProviders = providers.embeddingModelProviders;
   
             chatModelProvider = Object.keys(providers.chatModelProviders)[0];
@@ -144,7 +151,7 @@ export type Message = {
     setNotFound: (notFound: boolean) => void,
   ) => {
     const res = await fetch(
-      `${process.env.BACKEND_API_URL}/chats/${chatId}`,
+      `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/chats/${chatId}`,
       {
         method: 'GET',
         headers: {
@@ -160,14 +167,15 @@ export type Message = {
     }
   
     const data = await res.json();
+
+    console.log("MESSAGE", data.message);
   
-    const messages = data.messages.map((msg: any) => {
+    const messages = data.messages.map((msg: Msg) => {
       return {
         ...msg,
-        ...JSON.parse(msg.metadata),
+        ...(typeof msg.metadata === 'string' ? JSON.parse(msg.metadata) : msg.metadata),
       };
     }) as Message[];
-  
     setMessages(messages);
   
     const history = messages.map((msg) => {
@@ -184,7 +192,7 @@ export type Message = {
     setIsMessagesLoaded(true);
   };
 
-  export const MainPage = ({id}: {id: string}) => {
+  export const MainPage = ({id}: {id?: string}) => {
 
     const searchParams = useSearchParams();
     const initialMessage = searchParams.get('q');

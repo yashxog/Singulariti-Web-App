@@ -2,8 +2,8 @@ import { NewChatSearchBox } from "./newChatSearchBox";
 
 export const NewAnswerPage = ({
     sendMessage,
-    focusMode,
-    setFocusMode,
+    // focusMode,
+    // setFocusMode,
 }: {
     sendMessage: (message: string) => void;
     focusMode: string;
@@ -18,8 +18,8 @@ export const NewAnswerPage = ({
                     </h2>
                     <NewChatSearchBox
                         sendMessage={sendMessage}
-                        focusMode={focusMode}
-                        setFocusMode={setFocusMode}
+                        // focusMode={focusMode}
+                        // setFocusMode={setFocusMode}
                     />
                 </div>
             </div>

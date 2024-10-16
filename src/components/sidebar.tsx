@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react'
-import { HomeIcon, LibraryIcon, Package2 } from 'lucide-react'
+import { HomeIcon, LibraryIcon } from 'lucide-react'
 import { useSelectedLayoutSegments } from 'next/navigation';
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip"
 import Link from 'next/link';

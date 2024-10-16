@@ -11,6 +11,10 @@ type Image = {
   title: string;
 };
 
+type Slide = {
+  src: string;
+}
+
 export const ImageResults = ({
   query,
   chat_history,
@@ -21,7 +25,7 @@ export const ImageResults = ({
   const [images, setImages] = useState<Image[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
-  const [slides, setSlides] = useState<any[]>([]);
+  const [slides, setSlides] = useState<Slide[]>([]);
 
   return (
     <div className="w-full pl-4">
@@ -75,7 +79,7 @@ export const ImageResults = ({
           {[...Array(4)].map((_, i) => (
             <div
               key={i}
-              className="bg-gray-200 dark:bg-gray-700 h-24 w-full rounded-lg animate-pulse aspect-video"
+              className="bg-custom-bg-2 dark:bg-custom-bg-2 h-24 w-full rounded-lg animate-pulse aspect-video"
             />
           ))}
         </div>
