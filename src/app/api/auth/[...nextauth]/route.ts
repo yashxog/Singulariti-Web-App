@@ -5,8 +5,8 @@ import axios from "axios";
 const handler = NextAuth({
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID ?? "",
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? ""
+      clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ?? "",
+      clientSecret: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET ?? ""
     })
   ],
   callbacks: {
@@ -14,7 +14,7 @@ const handler = NextAuth({
 
       if (account && user) {
 
-        const response = await axios.post(`${process.env.BACKEND_API_URL}/auth`, {
+        const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/auth`, {
           email: user.email,
           name: user.name,
           provider: "Google"

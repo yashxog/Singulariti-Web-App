@@ -2,6 +2,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import { Document } from '@langchain/core/documents';
 import { Fragment, useState } from 'react';
 import { Link } from 'lucide-react';
+import Image from 'next/image';
 
 export const AnswerSources = ({ sources }: { sources: Document[] }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -30,7 +31,7 @@ export const AnswerSources = ({ sources }: { sources: Document[] }) => {
           </p>
           <div className="flex flex-row items-center justify-between">
             <div className="flex flex-row items-center space-x-1">
-              <img
+              <Image
                 src={`https://s2.googleusercontent.com/s2/favicons?domain_url=${source.metadata.url}`}
                 width={16}
                 height={16}
@@ -55,7 +56,7 @@ export const AnswerSources = ({ sources }: { sources: Document[] }) => {
         >
           <div className="flex flex-row items-center space-x-1">
             {sources.slice(3, 6).map((source, i) => (
-              <img
+              <Image
                 src={`https://s2.googleusercontent.com/s2/favicons?domain_url=${source.metadata.url}`}
                 width={16}
                 height={16}
@@ -115,7 +116,7 @@ export const AnswerSources = ({ sources }: { sources: Document[] }) => {
                         </p>
                         <div className="flex flex-row items-center justify-between">
                           <div className="flex flex-row items-center space-x-2">
-                            <img
+                            <Image
                               src={`https://s2.googleusercontent.com/s2/favicons?domain_url=${source.metadata.url}`}
                               width={16}
                               height={16}

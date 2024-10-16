@@ -1,4 +1,4 @@
-import { Edit, Clock, Share, Trash, LogOut } from "lucide-react";
+import { Clock, Trash, LogOut } from "lucide-react";
 import { useState, useEffect } from "react";
 import { formatTimeDifference } from "@/lib/utils";
 import { Message } from "./mainPage";

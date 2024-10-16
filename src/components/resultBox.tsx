@@ -31,7 +31,7 @@ export const ResultBox = ({
 }) => {
 
     const [parsedMessage, setParsedMessage] = useState(message.content);
-    const [speechMessage, setSpeechMessage] = useState(message.content);
+    // const [speechMessage, setSpeechMessage] = useState(message.content);
 
     useEffect(() => {
         const regex = /\[(\d+)\]/g;
@@ -46,7 +46,7 @@ export const ResultBox = ({
             );
         }
 
-        setSpeechMessage(message.content.replace(regex, ''));
+        // setSpeechMessage(message.content.replace(regex, ''));
         setParsedMessage(message.content);
     }, [message.content, message.sources, message.role]);
 

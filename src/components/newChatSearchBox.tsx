@@ -1,17 +1,17 @@
 import { ArrowUp } from 'lucide-react';
 import { useEffect, useState, useRef } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
-import Focus from './messageInputActions/focus';
+// import Focus from './messageInputActions/focus';
 import { ScrollingButtonsComponent } from './scrollingButtons';
 
 export const NewChatSearchBox = ({
     sendMessage,
-    focusMode,
-    setFocusMode
+    // focusMode,
+    // setFocusMode
 } : {
     sendMessage: (message: string) => void;
-    focusMode: string,
-    setFocusMode: (mode: string) => void;
+    // focusMode: string,
+    // setFocusMode: (mode: string) => void;
 }) => {
     const [message, setMessage] = useState('');
 
