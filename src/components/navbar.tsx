@@ -36,23 +36,24 @@ export const Navbar = ({messages}: {messages: Message[]}) => {
     }, []);
 
     return (
-        <div className="fixed z-40 top-0 left-0 right-0 w-full flex items-center justify-between py-2 sm:py-4 px-2 sm:px-4 text-sm text-white dark:text-white/70 border-b bg-black dark:bg-dark-primary border-borderColour1 dark:border-borderColour1 border-opacity-40 dark:border-opacity-40">
-          <div className="flex items-center space-x-2 min-w-[80px]">
-            <Clock size={16} className="flex-shrink-0" />
-            <p className="text-xs whitespace-nowrap">{timeAgo}</p>
+        <div className="fixed z-40 top-0 left-1/2 transform -translate-x-1/2 w-full sm:max-w-screen-md md:max-w-screen-xl flex items-center justify-between py-4 px-4 text-sm text-white dark:text-white/70 border-b bg-black dark:bg-dark-primary border-borderColour1 dark:border-borderColour1 border-opacity-40 dark:border-opacity-40">
+          <div className="flex items-center space-x-2">
+            <Clock size={17} />
+            <p className="text-xs">{timeAgo}</p>
           </div>
           
-          <p className="max-w-[40%] sm:max-w-[50%] truncate text-center mx-2">{title}</p>
+          <p className="max-w-[50%] truncate text-center">{title}</p>
           
-          <div className="flex items-center space-x-2 sm:space-x-4 min-w-[80px] justify-end">
-            <Trash
-              size={16}
-              className="text-red-400 active:scale-95 transition duration-100 cursor-pointer flex-shrink-0"
-            />
+          <div className="flex items-center space-x-4">
+            {/* <Trash
+              size={17}
+              className="text-red-400 active:scale-95 transition duration-100 cursor-pointer"
+            /> */}
+
             <LogOut
-              size={16}
+              size={17}
               onClick={() => signOut()}
-              className="active:scale-95 transition duration-100 cursor-pointer flex-shrink-0"
+              className="active:scale-95 transition duration-100 cursor-pointer"
             />
           </div>
         </div>
