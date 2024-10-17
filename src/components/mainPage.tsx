@@ -30,8 +30,8 @@ export type Message = {
     metadata: string;
   }
   
-  const wsURL = process.env.NEXT_PUBLIC_WEB_SOCKET_URL || "ws://localhost:8200";
-  const backendAPI = process.env.NEXT_PUBLIC_BACKEND_API_URL || "http://localhost:8200/singulariti";
+  const wsURL = process.env.NEXT_PUBLIC_WEB_SOCKET_URL || "wss://singulariti-answer-engine-v1.onrender.com";
+  const backendAPI = process.env.NEXT_PUBLIC_BACKEND_API_URL || "https://singulariti-answer-engine-v1.onrender.com/singulariti";
 
   const useSocket = (url: string, setIsWsReady: (ready: boolean) => void, setError: (error: boolean) => void) => {
   const [ws,setWs] =  useState<WebSocket | null>(null);
@@ -167,8 +167,6 @@ export type Message = {
     }
   
     const data = await res.json();
-
-    console.log("MESSAGE", data.message);
   
     const messages = data.messages.map((msg: Msg) => {
       return {

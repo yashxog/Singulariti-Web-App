@@ -4,7 +4,7 @@ export const getSuggestions = async (chatHisory: Message[]) => {
   const chatModel = localStorage.getItem('chatModel');
   const chatModelProvider = localStorage.getItem('chatModelProvider');
 
-  const res = await fetch(`${"http://localhost:8200/singulariti"}/suggestions`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/suggestions`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
