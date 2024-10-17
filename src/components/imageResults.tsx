@@ -37,7 +37,7 @@ export const ImageResults = ({
           const chatModelProvider = localStorage.getItem('chatModelProvider');
           const chatModel = localStorage.getItem('chatModel');
           const res = await fetch(
-            `${"http://localhost:8200/singulariti"}/images`,
+            `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/images`,
             {
               method: 'POST',
               headers: {
