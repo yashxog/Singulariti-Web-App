@@ -47,7 +47,7 @@ export const VideoResults = ({
             const chatModel = localStorage.getItem('chatModel');
             
             const res = await fetch(
-              `${"http://localhost:8200/singulariti"}/videos`,
+              `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/videos`,
               {
                 method: 'POST',
                 headers: {
