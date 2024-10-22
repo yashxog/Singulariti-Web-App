@@ -34,11 +34,11 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
            <aside className="fixed inset-y-0 left-0 z-10 hidden w-16 flex-col bg-custom-bg-1 sm:flex">
            <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
                   <Link
-                      href="#"
-                      className="group flex h-14 w-14 shrink-0 items-center justify-center gap-2 rounded-lg bg-primary text-lg font-semibold text-primary-foreground md:h-10 md:w-10 md:text-base"
+                      href="/"
+                      className="group flex h-12 w-12 shrink-0 items-center justify-center gap-2 rounded-lg bg-primary text-lg font-semibold text-primary-foreground md:h-9 md:w-9 md:text-base"
                   >
                       <Image src={SingularityPlaygroundLogo} alt="logo of singularity playground"/>
-                      <span className="sr-only">Acme Inc</span>
+                      <span className="sr-only">Singulariti-Playground</span>
                   </Link>
                   </nav>
               <nav>
