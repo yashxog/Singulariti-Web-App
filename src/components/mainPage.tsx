@@ -12,6 +12,7 @@ import { getSuggestions } from "@/lib/action";
 import Error from "next/error";
 import { useSession } from "next-auth/react";
 import { SignUp } from "./signup";
+import { RateLimitReachedComponent } from "./rateLimitReached";
 
 export type Message = {
     messageId: string;
@@ -27,14 +28,42 @@ export type Message = {
   type Msg = {
     messageId: string;
     content: string;
-    metadata: string;
+    metaData: {
+      sources: Document[]
+    }
+  }
+
+  type Session = {
+    accessToken: string;
+    expires: string;
+    jwt: {
+      name: string;
+      email: string;
+      id: string;
+      accessToken: string;
+      iat: number;
+      exp: number;
+    };
+    user: {
+      name: string;
+      email: string;
+      image: string;
+      id: string;
+    }
   }
   
   const wsURL = process.env.NEXT_PUBLIC_WEB_SOCKET_URL || "wss://singulariti-answer-engine-v1.onrender.com";
   const backendAPI = process.env.NEXT_PUBLIC_BACKEND_API_URL || "https://singulariti-answer-engine-v1.onrender.com/singulariti";
 
-  const useSocket = (url: string, setIsWsReady: (ready: boolean) => void, setError: (error: boolean) => void) => {
+  const useSocket = (url: string, setIsWsReady: (ready: boolean) => void, setError: (error: boolean) => void, session: Session) => {
   const [ws,setWs] =  useState<WebSocket | null>(null);
+  const sessionRef = useRef(session);
+
+  useEffect(() => {
+    sessionRef.current = session;
+  }, [session]);
+
+
   
     useEffect(() => {
       if(!ws) {
@@ -111,6 +140,14 @@ export type Message = {
             console.log('web socket connection open');
             clearTimeout(timeoutId);
             setIsWsReady(true);
+
+            if (sessionRef.current?.user) {
+              ws.send(JSON.stringify({
+                type: "auth",
+                token: sessionRef.current?.jwt, // Assuming NextAuth provides an access token
+                // Do not send detailed user information here
+              }));
+            }
           };
   
           ws.onerror = () => {
@@ -130,6 +167,10 @@ export type Message = {
             if (parsedData.type === 'error') {
                 toast.error(parsedData.data);
               }
+              
+            if (parsedData.type === 'rateLimit') {
+                toast.error(parsedData.data);
+              } 
             });
           
           setWs(ws);
@@ -138,6 +179,15 @@ export type Message = {
         connectWs();
       }
     }, [ws, url, setIsWsReady, setError]);
+
+    useEffect(() => {
+      if (ws && ws.readyState === WebSocket.OPEN && session?.user) {
+        ws.send(JSON.stringify({
+          type: "auth",
+          token: session.jwt,
+        }));
+      }
+    }, [session, ws]);
   
     return ws;
   }
@@ -169,9 +219,11 @@ export type Message = {
     const data = await res.json();
   
     const messages = data.messages.map((msg: Msg) => {
+      if(msg.metaData){
+      }
       return {
         ...msg,
-        ...(typeof msg.metadata === 'string' ? JSON.parse(msg.metadata) : msg.metadata),
+        ...(typeof msg.metaData === 'string' ? JSON.parse(msg.metaData) : msg.metaData),
       };
     }) as Message[];
     setMessages(messages);
@@ -201,9 +253,11 @@ export type Message = {
     const [hasError, setHasError] = useState(false);
   
     const [isReady, setIsReady] = useState(false);
+    const [isLimit, setIsLimit] = useState(true);
+    const [timeLeft, setTimeLeft] = useState<string>('');
   
-    const [isWSReady, setIsWsReady] = useState(false);
-    const ws= useSocket(wsURL!, setIsWsReady, setHasError);
+    const [isWSReady, setIsWsReady] = useState(false)
+    const ws= useSocket(wsURL!, setIsWsReady, setHasError, session as Session);
   
     const [chatHistory, setChatHistory] = useState<[string, string][]>([]);
     const [messages, setMessages] = useState<Message[]>([]);
@@ -240,12 +294,12 @@ export type Message = {
     
     useEffect(() => {
       return () => {
-        if (ws?.readyState === 1) {
+        if (ws instanceof WebSocket && ws.readyState === WebSocket.OPEN) {
           ws.close();
           console.log('[DEBUG] closed');
         }
       };
-    }, []);
+    }, [ws]);
   
     const messagesRef = useRef<Message[]>([]);
   
@@ -270,7 +324,7 @@ export type Message = {
   
       const messageId = crypto.randomBytes(7).toString('hex');
   
-      ws?.send(
+      (await ws)?.send(
         JSON.stringify({
           type: 'message',
           message: {
@@ -298,6 +352,13 @@ export type Message = {
         if (data.type === "error") {
           setLoading(false);
           toast.error(data.data);
+          return
+        }
+
+        if (data.type === "rateLimit") {
+          setLoading(false);
+          setIsLimit(false);
+          setTimeLeft(data.resetAfter);
           return
         }
   
@@ -356,7 +417,7 @@ export type Message = {
           ['assistant', recievedMessage],
         ]);
   
-        ws?.removeEventListener('message', messageHandler);
+        (await ws)?.removeEventListener('message', messageHandler);
         setLoading(false);
   
         const lastMsg = messagesRef.current[messagesRef.current.length - 1];
@@ -381,12 +442,12 @@ export type Message = {
        }
      };
   
-      ws?.addEventListener('message', messageHandler);
+      (await ws)?.addEventListener('message', messageHandler);
     };
   
   
     // const rewrite = (messageId: string) => {
-    //   const index = messages.findIndex((msg) => msg.id === messageId);
+    // const index = messages.findIndex((msg) => msg.id === messageId);
   
     //   if (index === -1) return;
   
@@ -431,7 +492,8 @@ export type Message = {
                   <SignUp />
                 </div>
               )}
-              <div className={`${!session ? 'blur-sm' : ''}`}>
+              {isLimit ? (
+                <div className={`${!session ? 'blur-sm' : ''}`}>
                 <div className="flex justify-center min-h-screen bg-light-primary bg-black">
                   <div className="w-full max-w-screen px-4">
                     {messages.length > 0 ? (
@@ -454,6 +516,12 @@ export type Message = {
                   </div>
                 </div>
               </div>
+              ) : (
+                <RateLimitReachedComponent
+                  timeLeft={timeLeft}
+                />
+              )}
+              
             </div>
           )
         ) : (

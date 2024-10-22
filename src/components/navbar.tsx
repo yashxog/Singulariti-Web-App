@@ -16,8 +16,14 @@ export const Navbar = ({messages}: {messages: Message[]}) => {
                 ? `${messages[0].content.substring(0, 20).trim()}...` 
                 : messages[0].content;
             setTitle(newTitle);
-            const newTimeAgo = formatTimeDifference(new Date(), new Date(messages[0].createdAt));
-            setTimeAgo(newTimeAgo);
+            if(messages[0].createdAt){
+              const newTimeAgo = formatTimeDifference(new Date(), new Date(messages[0].createdAt));
+              setTimeAgo(newTimeAgo);
+            } else{
+              const currentTime = new Date();
+              const newTimeAgo = formatTimeDifference(new Date(), new Date(currentTime));
+              setTimeAgo(newTimeAgo);
+            }
         }
     }, [messages]);
 

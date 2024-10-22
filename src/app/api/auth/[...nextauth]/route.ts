@@ -20,9 +20,11 @@ const handler = NextAuth({
           provider: "Google"
         });
 
-        const DbUser = response.data; //getting user fro database
+        const DbUser = response.data; //getting user from database
 
         token.id = DbUser.id;
+        token.email = DbUser.email;
+        token.accessToken = account.access_token;
       }
       return token;
     },
@@ -31,7 +33,11 @@ const handler = NextAuth({
       
       if (session?.user) {
         session.user.id = token.id as string; // Attach user ID from token to session
+        session.user.email = token.email as string;
       }
+     
+        session.accessToken = token.accessToken as string;
+        session.jwt = token;
       return session;
     },
   }
