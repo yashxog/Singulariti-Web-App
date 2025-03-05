@@ -11,11 +11,13 @@ export const AnswerPage = ({
     messages,
     sendMessage,
     messageAppeared,
+    toggleWebSocket,
   }: {
     loading: boolean;
     messages: Message[];
     sendMessage: (message: string) => void;
     messageAppeared: boolean;
+    toggleWebSocket: ()=> void;
 }) => {
     const [dividerWidth, setDividerWidth] = useState(0);
     const dividerRef = useRef<HTMLDivElement | null>(null);
@@ -74,7 +76,7 @@ export const AnswerPage = ({
             </div>
             {dividerWidth > 0 && (
               <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-40 w-full max-w-[70%]">
-                <SearchBox loading={loading} sendMessage={sendMessage} />
+                <SearchBox loading={loading} sendMessage={sendMessage} toggleWebSocket={toggleWebSocket}/>
               </div>
             )}
           </div>

@@ -2,10 +2,12 @@ import { NewChatSearchBox } from "./newChatSearchBox";
 
 export const NewAnswerPage = ({
     sendMessage,
+    toggleWebSocket,
     // focusMode,
     // setFocusMode,
 }: {
     sendMessage: (message: string) => void;
+    toggleWebSocket: () => void;
     focusMode: string;
     setFocusMode: (mode: string) => void;
 }) => {
@@ -18,6 +20,7 @@ export const NewAnswerPage = ({
                     </h2>
                     <NewChatSearchBox
                         sendMessage={sendMessage}
+                        toggleWebSocket={toggleWebSocket}
                         // focusMode={focusMode}
                         // setFocusMode={setFocusMode}
                     />
