@@ -10,10 +10,10 @@ export const NewAnswerPage = ({
     setFocusMode: (mode: string) => void;
 }) => {
     return (
-        <div className="flex items-center justify-center min-h-screen w-full bg-light-primary bg-black">
+        <div className="flex items-center justify-center min-h-screen w-full bg-paper">
             <div className="w-full max-w-[70%] px-4">
                 <div className="flex flex-col items-center justify-center space-y-8">
-                    <h2 className="text-black dark:text-white text-5xl font-normal text-center pb-10">
+                    <h2 className="text-charcoal dark:text-charcoal text-5xl font-normal text-center pb-10">
                         Ask Anything
                     </h2>
                     <NewChatSearchBox

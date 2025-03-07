@@ -42,7 +42,7 @@ export const Navbar = ({messages}: {messages: Message[]}) => {
     }, []);
 
     return (
-        <div className="fixed z-40 top-0 left-1/2 transform -translate-x-1/2 w-full sm:max-w-screen-md md:max-w-screen-xl flex items-center justify-between py-4 px-4 text-sm text-white dark:text-white/70 border-b bg-black dark:bg-dark-primary border-borderColour1 dark:border-borderColour1 border-opacity-40 dark:border-opacity-40">
+        <div className="fixed z-40 top-0 left-1/2 transform -translate-x-1/2 w-full sm:max-w-screen-md md:max-w-screen-xl flex items-center justify-between py-4 px-4 text-sm text-charcoal dark:text-charcoal border-b bg-paper dark:bg-paper border-charcoal dark:border-charcoal border-opacity-40 dark:border-opacity-40">
           <div className="flex items-center space-x-2">
             <Clock size={17} />
             <p className="text-xs">{timeAgo}</p>

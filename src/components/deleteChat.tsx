@@ -44,7 +44,7 @@ export const DeleteChat: React.FC<DeleteChatProps> = ({ chatId, chats, setChats 
     <>
       <button
         onClick={() => setConfirmationDialogOpen(true)}
-        className="bg-transparent text-red-400 hover:scale-105 transition duration-200"
+        className="bg-white px-4 text-red-400 rounded-lg hover:scale-105 transition duration-200"
         aria-label="Delete chat"
       >
         <div className='flex flex-row justify-between items-center space-x-2'>

@@ -31,7 +31,7 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <div>
-           <aside className="fixed inset-y-0 left-0 z-10 hidden w-16 flex-col bg-custom-bg-1 sm:flex">
+           <aside className="fixed inset-y-0 left-0 z-10 hidden w-16 flex-col bg-paper-2 sm:flex">
            <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
                   <Link
                       href="/"
@@ -49,7 +49,7 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
                                   <TooltipTrigger asChild>
                                       <Link
                                           href={href}
-                                          className={`flex h-9 w-9 items-center justify-center rounded-lg transition-colors md:h-10 md:w-10 ${active ? "bg-icon-bg text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-accent hover:bg-opacity-20"
+                                          className={`flex h-9 w-9 items-center justify-center rounded-lg transition-colors md:h-10 md:w-10 ${active ? "bg-subtext text-primary-foreground" : "text-charcoal hover:text-foreground hover:bg-subtext hover:bg-opacity-50"
                                               }`}
                                       >
                                           <Icon className={`h-6 w-6 ${active ? "text-primary" : ""}`} />

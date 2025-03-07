@@ -21,12 +21,12 @@ export const AnswerSources = ({ sources }: { sources: Document[] }) => {
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
       {sources.slice(0, 3).map((source, i) => (
         <a
-          className="bg-gray-700 hover:bg-gray-800 dark:bg-custom-bg-2 dark:hover:bg-customBg border border-borderColour1 dark:border dark:border-[linear-gradient(to_right, rgba(112, 11, 151, 1) 0%, rgba(136, 10, 223, 1) 100%)] bg-opacity-10 transition duration-200 rounded-lg p-3 flex flex-col space-y-2 font-medium"
+          className="bg-paper-2 hover:bg-card-hover-1 dark:bg-paper-2 dark:hover:bg-card-hover-1 border border-white dark:border dark:border-white bg-opacity-10 transition duration-200 rounded-lg p-3 flex flex-col space-y-2 font-medium"
           key={i}
           href={source.metadata.url}
           target="_blank"
         >
-          <p className="text-white dark:text-white text-xs overflow-hidden whitespace-nowrap text-ellipsis">
+          <p className="text-charcoal dark:text-charcoal text-xs overflow-hidden whitespace-nowrap text-ellipsis">
             {source.metadata.title}
           </p>
           <div className="flex flex-row items-center justify-between">
@@ -38,12 +38,12 @@ export const AnswerSources = ({ sources }: { sources: Document[] }) => {
                 alt="favicon"
                 className="rounded-lg h-4 w-4"
               />
-              <p className="text-xs text-white/50 dark:text-white/50 overflow-hidden whitespace-nowrap text-ellipsis">
+              <p className="text-xs text-subtext dark:text-subtext overflow-hidden whitespace-nowrap text-ellipsis">
                 {source.metadata.url.replace(/.+\/\/|www.|\..+/g, '')}
               </p>
             </div>
-            <div className="flex flex-row items-center space-x-1 text-white/50 dark:text-white/50 text-xs">
-              <div className="bg-white/50 dark:bg-white/50 h-[4px] w-[4px] rounded-full" />
+            <div className="flex flex-row items-center space-x-1 text-subtext dark:text-subtext text-xs">
+              <div className="bg-subtext dark:bg-subtext h-[4px] w-[4px] rounded-full" />
               <span>{i + 1}</span>
             </div>
           </div>
@@ -52,7 +52,7 @@ export const AnswerSources = ({ sources }: { sources: Document[] }) => {
       {sources.length > 3 && (
         <button
           onClick={openModal}
-          className="bg-gray-700 hover:bg-gray-800 dark:bg-custom-bg-2 dark:hover:bg-dark-200 bg-opacity-30 border border-borderColour1 transition duration-200 rounded-lg p-3 flex flex-col space-y-2 font-medium"
+          className="bg-paper-2 hover:bg-card-hover-1 dark:bg-paper-2 dark:hover:bg-card-hover-1 bg-opacity-30 border border-white transition duration-200 rounded-lg p-3 flex flex-col space-y-2 font-medium"
         >
           <div className="flex flex-row items-center space-x-1">
             {sources.slice(3, 6).map((source, i) => (
@@ -66,7 +66,7 @@ export const AnswerSources = ({ sources }: { sources: Document[] }) => {
               />
             ))}
           </div>
-          <p className="text-xs text-white/50 dark:text-white/50">
+          <p className="text-xs text-subtext dark:text-subtext">
             View {sources.length - 3} more
           </p>
         </button>
@@ -82,7 +82,7 @@ export const AnswerSources = ({ sources }: { sources: Document[] }) => {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm" />
+            <div className="fixed inset-0 bg-paper bg-opacity-25 backdrop-blur-sm" />
           </Transition.Child>
 
           <div className="fixed inset-y-0 right-0 overflow-y-auto w-[30%]">
@@ -96,22 +96,22 @@ export const AnswerSources = ({ sources }: { sources: Document[] }) => {
                 leaveFrom="opacity-100 translate-x-0"
                 leaveTo="opacity-0 translate-x-full"
               >
-                <Dialog.Panel className="w-full h-full transform bg-black dark:bg-black border-l border-borderColour1 dark:border-borderColour1 p-6 text-left align-middle shadow-xl transition-all overflow-y-auto scrollbar-hide">
-                  <Dialog.Title className="text-3xl font-medium leading-6 text-white dark:text-white mb-4">
+                <Dialog.Panel className="w-full h-full transform bg-paper-2 dark:bg-paper-2 border-l border-charcoal dark:border-charcoal p-6 text-left align-middle shadow-xl transition-all overflow-y-auto scrollbar-hide">
+                  <Dialog.Title className="text-3xl font-medium leading-6 text-charcoal dark:text-charcoal mb-4">
                     <div className='flex flex-row items-center space-x-2 gap-3 mb-10'>
-                        <Link className="text-white" size={24} />
+                        <Link className="text-charcoal" size={24} />
                         Sources
                     </div>
                   </Dialog.Title>
                   <div className="flex flex-col space-y-4">
                     {sources.map((source, i) => (
                       <a
-                        className="h-28 bg-custom-bg-1 hover:bg-custom-bg-2 dark:bg-custom-bg-1 dark:hover:bg-custom-bg-2 bg-opacity-30 border border-borderColour1 border-opacity-30 dark:border-borderColour1 dark:border-opacity-30 transition duration-200 rounded-lg p-3 flex flex-col space-y-2 font-medium"
+                        className="h-28 bg-paper-2 hover:bg-card-hover-1 dark:bg-paper-2 dark:hover:bg-card-hover-1 bg-opacity-30 border border-white border-opacity-30 dark:border-white dark:border-white transition duration-200 rounded-lg p-3 flex flex-col space-y-2 font-medium"
                         key={i}
                         href={source.metadata.url}
                         target="_blank"
                       >
-                        <p className="text-white dark:text-white text-sm overflow-hidden whitespace-nowrap text-ellipsis">
+                        <p className="text-charcoal dark:text-charcoal text-sm overflow-hidden whitespace-nowrap text-ellipsis">
                           {source.metadata.title}
                         </p>
                         <div className="flex flex-row items-center justify-between">
@@ -123,19 +123,19 @@ export const AnswerSources = ({ sources }: { sources: Document[] }) => {
                               alt="favicon"
                               className="rounded-lg h-6 w-6"
                             />
-                            <p className="text-xs text-white/50 dark:text-white/50 overflow-hidden whitespace-nowrap text-ellipsis">
+                            <p className="text-xs text-subtext dark:text-subtext overflow-hidden whitespace-nowrap text-ellipsis">
                               {source.metadata.url.replace(
                                 /^(?:https?:\/\/)?(?:www\.)?(?:\w+\.)?(\w+)\..+$/,
                                 '$1'
                               )}
                             </p>
                           </div>
-                          <div className="flex flex-row items-center space-x-1 text-white/50 dark:text-white/50 text-xs">
-                            <div className="bg-white/50 dark:bg-white/50 h-[4px] w-[4px] rounded-full" />
+                          <div className="flex flex-row items-center space-x-1 text-subtext dark:text-subtext text-xs">
+                            <div className="bg-subtext dark:bg-subtext h-[4px] w-[4px] rounded-full" />
                             <span>{i + 1}</span>
                           </div>
                         </div>
-                        <p className="text-white dark:text-white text-xs font-normal overflow-hidden whitespace-nowrap text-ellipsis">
+                        <p className="text-subtext dark:text-subtext text-xs font-normal overflow-hidden whitespace-nowrap text-ellipsis">
                           {source.pageContent}
                           </p>
                       </a>

@@ -473,7 +473,7 @@ export type Message = {
     if (hasError) {
       return (
         <div className="flex flex-col items-center justify-center min-h-screen">
-          <p className="dark:text-white/70 text-black/70 text-sm">
+          <p className="dark:text-charcoal text-charcoal text-sm">
             Failed to connect to the server. Please try again later.
           </p>
         </div>
@@ -494,7 +494,7 @@ export type Message = {
               )}
               {isLimit ? (
                 <div className={`${!session ? 'blur-sm' : ''}`}>
-                <div className="flex justify-center min-h-screen bg-light-primary bg-black">
+                <div className="flex justify-center min-h-screen bg-paper">
                   <div className="w-full max-w-screen px-4">
                     {messages.length > 0 ? (
                       <>

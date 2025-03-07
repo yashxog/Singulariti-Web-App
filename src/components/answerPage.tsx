@@ -46,7 +46,7 @@ export const AnswerPage = ({
       }, [messages]);
 
     return (
-        <div className="flex justify-center min-h-screen bg-light-primary bg-black">
+        <div className="flex justify-center min-h-screen bg-paper">
           <div className="w-full max-w-full px-4">
             <div className="flex flex-col space-y-6 pt-8 pb-44 lg:pb-32">
               {messages.map((msg, i) => {
@@ -64,7 +64,7 @@ export const AnswerPage = ({
                       sendMessage={sendMessage}
                     />
                     {!isLast && msg.role === 'assistant' && (
-                      <div className="h-px w-full bg-gray-900 dark:bg-dark-secondary" />
+                      <div className="h-px w-full bg-paper dark:bg-paper" />
                     )}
                   </Fragment>
                 );

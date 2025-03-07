@@ -3,16 +3,16 @@ import { signIn } from "next-auth/react";
 export const SignUp = () => {
 
   return (
-    <div className="min-h-[30%] min-w-[30%] flex items-center justify-center rounded-xl bg-black border border-borderColour1">
-      <div className="bg-custom-bg-1  p-8 w-full max-w-sm">
+    <div className="min-h-[30%] min-w-[30%] flex items-center justify-center rounded-xl bg-paper-2 border border-white">
+      <div className="p-8 w-full max-w-sm">
         <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-white">Google Login</h2>
-          <p className="text-gray-50 mt-2">Log in to continue</p>
+          <h2 className="text-3xl font-bold text-charcoal">Google Login</h2>
+          <p className="text-subtext mt-2">Log in to continue</p>
         </div>
 
         <button
           onClick={() => signIn('google')}
-          className="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 rounded-lg px-4 py-3 text-gray-700 font-medium hover:bg-gray-200 hover:border hover:border-borderColour1 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-200 transition-colors"
+          className="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 rounded-lg px-4 py-3 text-charcoal font-medium hover:bg-card-hover-2 hover:border hover:border-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-200 transition-colors"
         >
           <svg 
             className="w-5 h-5" 

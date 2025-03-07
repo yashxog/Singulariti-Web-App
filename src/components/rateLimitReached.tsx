@@ -36,10 +36,10 @@ export function RateLimitReachedComponent({ timeLeft }: { timeLeft: string }) {
   }, [timeLeft])
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-black">
-      <Card className="w-full max-w-lg bg-custom-bg-1 border border-borderColour1 border-opacity-30">
+    <div className="flex items-center justify-center min-h-screen bg-paper">
+      <Card className="w-full max-w-lg bg-paper-2 border border-white">
         <CardHeader>
-          <CardTitle className="text-3xl font-Normal text-center">Rate Limit Reached</CardTitle>
+          <CardTitle className="text-3xl font-Normal text-center text-charcoal">Rate Limit Reached</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <Alert variant="destructive">
@@ -49,16 +49,16 @@ export function RateLimitReachedComponent({ timeLeft }: { timeLeft: string }) {
               <span>You&apos;ve reached the maximum number of requests. Please try again later.</span>
             </AlertDescription>
           </Alert>
-          <div className="flex items-center justify-center space-x-2 text-lg font-normal">
+          <div className="flex items-center justify-center space-x-2 text-subtext text-lg font-normal">
             <Clock className="h-5 w-5" />
             <span>Try Again After</span>
-            <span className="text-white">
+            <span>
               {formatTime(timeToRetry)}
             </span>
           </div>
         </CardContent>
         <CardFooter className="flex justify-center">
-          <Button variant="outline" className="bg-custom-bg-1 hover:bg-custom-bg-2 border border-borderColour1" onClick={() => window.location.reload()}>
+          <Button variant="outline" className="bg-mudbrown hover:bg-card-hover-1 hover:text-charcoal border border-white" onClick={() => window.location.reload()}>
             Try Again
           </Button>
         </CardFooter>

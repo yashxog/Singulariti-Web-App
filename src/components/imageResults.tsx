@@ -65,13 +65,13 @@ export const ImageResults = ({
           );
           setLoading(false);
         }}
-          className="w-full border border-dashed border-borderColour1 dark:border-borderColour1 hover:bg-custom-bg-2 dark:hover:bg-custom-bg-2 active:scale-95 duration-200 transition px-4 py-2 flex flex-row items-center justify-between rounded-lg text-gray-700 dark:text-white text-sm"
+          className="w-full border border-dashed border-charcoal dark:border-charcoal hover:bg-card-hover-2 dark:hover:bg-card-hover-2 active:scale-95 duration-200 transition px-4 py-2 flex flex-row items-center justify-between rounded-lg text-charcoal dark:text-charcoal text-sm"
         >
           <div className="flex flex-row items-center space-x-2">
             <ImagesIcon size={17} />
             <p>Search images</p>
           </div>
-          <PlusIcon className="text-white" size={17} />
+          <PlusIcon className="text-charcoal" size={17} />
         </button>
       )}
       {loading && (
@@ -79,7 +79,7 @@ export const ImageResults = ({
           {[...Array(4)].map((_, i) => (
             <div
               key={i}
-              className="bg-custom-bg-2 dark:bg-custom-bg-2 h-24 w-full rounded-lg animate-pulse aspect-video"
+              className="bg-paper-2 bg-opacity-50 dark:bg-paper-2 bg-opacity-50 h-24 w-full rounded-lg animate-pulse aspect-video"
             />
           ))}
         </div>
@@ -123,7 +123,7 @@ export const ImageResults = ({
             {images.length > 4 && (
               <button
                 onClick={() => setOpen(true)}
-                className="bg-custom-bg-1 hover:bg-custom-bg-2 dark:bg-custom-bg-1 dark:hover:bg-custom-bg-2 transition duration-200 active:scale-95 hover:scale-[1.02] h-24 w-full rounded-lg flex flex-col justify-between text-gray-700 dark:text-gray-300 p-2"
+                className="bg-paper-2 bg-opacity-50 hover:bg-card-over-2 dark:bg-paper-2 dark:bg-opacity-50 dark:hover:bg-card-hover-2 transition duration-200 active:scale-95 hover:scale-[1.02] h-24 w-full rounded-lg flex flex-col justify-between text-gray-700 dark:text-gray-300 p-2"
               >
                 <div className="flex flex-row items-center space-x-1">
                   {images.slice(3, 6).map((image, i) => (
@@ -135,7 +135,7 @@ export const ImageResults = ({
                     />
                   ))}
                 </div>
-                <p className="text-gray-500 dark:text-gray-400 text-xs">
+                <p className="text-subtext dark:text-subtext text-xs">
                   View {images.length - 3} more
                 </p>
               </button>

@@ -18,9 +18,18 @@ const config: Config = {
 			'customBg': 'linear-gradient(30deg,rgba(0,0,0,1)0%,rgba(62,6,95,0.4)40%,rgba(0,0,0,0.85)85%,rgba(0,0,0,1)100%)',
 			'custom-white-greay-grad': 'linear-gradient(to bottom,rgba(255,255,255,1)0%,rgba(104,104,104,1)100%)',
 			'custom-purple-grad-border': 'linear-gradient(to right,rgba(112,11,151,1)0%,rgba(136,10,223,1)100%);',
+			'card-hover-1': 'linear-gradient(180deg,rgba(197,190,172)0%,rgba(250,121,23,0.7)100%);',
+			'card-hover-2': 'linear-gradient(180deg,rgba(197,190,172,0.5)0%,rgba(250,121,23,0.7)100%);'
 			
 		},
   		colors: {
+			'paper': "#E2DFD0",
+			'paper-2': "#C5BEAC",
+			'brand-orange': "#FF6F00",
+			'blur-orange': "#F59312",
+			'charcoal': "#262424",
+			'subtext': "#524C42",
+			'mudbrown': "#312C15",
 			'icon-bg': 'rgba(31,41,55,0.7)',
 			borderColour1: '#880ADF',
   			background: 'hsl(var(--background))',

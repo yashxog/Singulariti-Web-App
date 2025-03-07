@@ -61,8 +61,8 @@ const Library = () => {
             </div>
           </div>
         ) : (
-          <div className='text-white'>
-            <div className='flex flex-row space-x-2 border-b border-borderColour1 border-opacity-50 mb-10'>
+          <div className='text-charcoal'>
+            <div className='flex flex-row space-x-2 border-b border-charcoal border-opacity-50 mb-10'>
               <LibraryIcon className='h-9 w-9'/>
               <h2 className='font-normal text-4xl mb-10 text-left'>Library</h2>
             </div>
@@ -73,16 +73,16 @@ const Library = () => {
                 {chats.map((chat, i) => (
                   <li
                     key={i}
-                    className='bg-custom-bg-1 hover:bg-custom-bg-2 p-4 rounded-lg flex flex-col justify-between items-start'
+                    className='bg-paper-2 hover:bg-card-hover-1 p-4 rounded-lg flex flex-col justify-between items-start'
                   >
                     <Link
                       href={`/chat/${chat.id}`}
-                      className='text-white lg:text-xl font-medium truncate transition duration-200 cursor-pointer'
+                      className='text-charcoal lg:text-xl font-medium truncate transition duration-200 cursor-pointer'
                     >
                       {chat.title}
                     </Link>
-                    <div className="flex flex-row items-center justify-between w-full text-white/70 mt-2">
-                      <div className="flex flex-row items-center space-x-1 lg:space-x-1.5 text-black/70 dark:text-white/70">
+                    <div className="flex flex-row items-center justify-between w-full text-charcoal mt-2">
+                      <div className="flex flex-row items-center space-x-1 lg:space-x-1.5 text-subtext dark:text-subtext">
                         <ClockIcon size={15} />
                         <p className="text-xs">
                           {formatTimeDifference(new Date(), new Date(chat.createdAt))}

@@ -61,7 +61,7 @@ export const ResultBox = ({
                 {/* Query */}
                 {message.role === 'user' && (
                   <div className={cn("w-full", messageIndex === 0 ? 'pt-12' : 'pt-4')}>
-                    <h2 className="text-white text-3xl text-left">
+                    <h2 className="text-charcoal text-3xl text-left">
                       {message.content}
                     </h2>
                   </div>
@@ -72,23 +72,23 @@ export const ResultBox = ({
                     <div ref={dividerRef} className="flex flex-col space-y-4 w-full">
 
                     {/* Answers */}
-                      <div className="flex flex-col space-y-2 bg-black rounded-lg p-4">
+                      <div className="flex flex-col space-y-2 bg-paper rounded-lg p-4">
                         <div className="flex flex-row items-center space-x-2 mb-3">
                           <Ellipsis
                             className={cn(
-                              'text-white',
+                              'text-charcoal',
                               isLast && loading ? 'animate-pulse' : 'animate-none',
                             )}
                             size={24}
                           />
-                          <h3 className="text-custom-white-greay-grad font-medium text-2xl">Answer</h3>
+                          <h3 className="text-charcoal font-medium text-2xl">Answer</h3>
                         </div>
                         <Markdown
                           className={cn(
-                            'prose dark:prose-invert prose-p:leading-relaxed prose-pre:p-0',
+                            'prose prose-p:leading-relaxed prose-pre:p-0',
                             'prose-ul:list-disc prose-ol:list-decimal',
                             'prose-ul:pl-5 prose-ol:pl-5',
-                            'max-w-none break-words text-black dark:text-white text-sm md:text-base font-medium'
+                            'max-w-none break-words text-charcoal dark:text-charcoal text-sm md:text-base font-medium'
                           )}
                         >
                           {parsedMessage}
@@ -99,8 +99,8 @@ export const ResultBox = ({
                         {message.sources && message.sources.length > 0 && (
                         <div className="pt-9 pb-3">
                           <div className="flex flex-row items-center space-x-2 mb-3">
-                            <Link className="text-white" size={24} />
-                            <h3 className="text-custom-white-greay-grad font-medium text-2xl">Sources</h3>
+                            <Link className="text-charcoal" size={24} />
+                            <h3 className="text-charcoal font-medium text-2xl">Sources</h3>
                           </div>
                           <AnswerSources sources={message.sources} />
                         </div>
@@ -108,20 +108,20 @@ export const ResultBox = ({
 
                         {/* Suggestions */}
                         {isLast && message.suggestions && message.suggestions.length > 0 && !loading && (
-                          <div className="mt-10 pt-10 border-t border-borderColour1 border-opacity-20 backdrop-blur-lg">
+                          <div className="mt-10 pt-10 border-t border-charccoal border-opacity-20 backdrop-blur-lg">
                             <div className="flex flex-row items-center space-x-2 mb-2">
-                              <Layers3 size={24} className="text-white" />
-                              <h3 className="text-white text-2xl font-medium">Related</h3>
+                              <Layers3 size={24} className="text-charcoal" />
+                              <h3 className="text-charcoal text-2xl font-medium">Related</h3>
                             </div>
                             <div className="flex flex-col space-y-2">
                               {message.suggestions.map((suggestion, i) => (
                                 <div
                                   key={i}
                                   onClick={() => sendMessage(suggestion)}
-                                  className="cursor-pointer flex flex-row justify-between items-center bg-custom-bg-1 hover:bg-custom-bg-2 rounded-lg p-2 transition duration-200"
+                                  className="cursor-pointer flex flex-row justify-between items-center bg-paper-2 hover:bg-card-hover-2 rounded-lg p-2 transition duration-200"
                                 >
-                                  <p className="text-white text-sm font-medium">{suggestion}</p>
-                                  <Plus size={18} className="text-[linear-gradient(to_bottom,rgba(255,255,255,1)0%,rgba(104,104,104,1)100%)] flex-shrink-0" />
+                                  <p className="text-charcoal text-sm font-medium">{suggestion}</p>
+                                  <Plus size={18} className="text-charcoal flex-shrink-0" />
                                 </div>
                               ))}
                             </div>

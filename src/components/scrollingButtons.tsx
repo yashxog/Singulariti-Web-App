@@ -37,9 +37,9 @@ export function ScrollingButtonsComponent() {
   }, [])
 
   return (
-    <div className="w-full overflow-hidden relative bg-black">
-      <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-black to-transparent z-10" />
-      <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-black to-transparent z-10" />
+    <div className="w-full overflow-hidden relative bg-paper">
+      <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-paper to-transparent z-10" />
+      <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-paper to-transparent z-10" />
       <div 
         ref={scrollRef} 
         className="flex whitespace-nowrap py-4"
@@ -49,7 +49,7 @@ export function ScrollingButtonsComponent() {
           <Button 
             key={index} 
             variant="outline" 
-            className="mx-2 whitespace-nowrap bg-custom-bg-1 hover:bg-custom-bg-2 border  border-borderColour1 border-opacity-30"
+            className="mx-2 whitespace-nowrap text-charcoal bg-paper-2 hover:bg-card-hover-2 border  border-white border-opacity-30"
           >
             {text}
           </Button>

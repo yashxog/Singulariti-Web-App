@@ -38,7 +38,7 @@ export default function RootLayout({
               unstyled: true,
               classNames: {
                 toast:
-                  'bg-[linear-gradient(30deg,_rgba(0,0,0,1)_0%,_rgba(62,6,95,0.4)_40%,_rgba(0,0,0,0.85)_85%,_rgba(0,0,0,1)_100%)] text-white rounded-lg p-4 flex flex-row items-center space-x-2',
+                  'bg-paper-2 text-charcoal rounded-lg p-4 flex flex-row items-center space-x-2',
               },
             }}
           />
