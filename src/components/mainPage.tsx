@@ -332,18 +332,29 @@ export const MainPage = ({ id }: { id?: string }) => {
 
     const messageId = crypto.randomBytes(7).toString('hex');
     const selectedWs = useAster ? wsAster : ws;
-
-    (await selectedWs)?.send(
-      JSON.stringify({
-        type: 'message',
-        message: {
-          chatId: chatId,
-          content: message,
-        },
-        focusMode: focusMode,
-        history: [...chatHistory, ['human', message]],
-      }),
-    );
+    if (useAster) {
+      selectedWs?.send(
+        JSON.stringify({
+          type: 'aster_browse',
+          message: {
+            chatId: chatId,
+            content: message,
+          },
+        }
+        ))
+    } else {
+      (await selectedWs)?.send(
+        JSON.stringify({
+          type: 'message',
+          message: {
+            chatId: chatId,
+            content: message,
+          },
+          focusMode: focusMode,
+          history: [...chatHistory, ['human', message]],
+        }),
+      );
+    };
 
     setMessages((prevMessages) => [...prevMessages,
     {
