@@ -6,14 +6,17 @@ import { cn } from "../lib/utils";
 
 export const SearchBox = ({
   sendMessage,
-  loading
+  loading,
+  toggleWebSocket
 }: {
   sendMessage: (message: string) => void;
-  loading: boolean
+  loading: boolean;
+  toggleWebSocket: () => void;
 }) => {
 
     const [message, setMessage] = useState<string>('');
     const [textareaRows, setTextareaRows] = useState(1);
+    const [isWebSocketOne, setIsWebSocketOne] = useState(true);
     const [mode, setMode] = useState<'multi' | 'single'>('single');
 
     useEffect(() => {
@@ -34,6 +37,11 @@ export const SearchBox = ({
         setMessage('');
       }
     }
+
+    const handleWebSocketToggle = () => {
+      toggleWebSocket();
+      setIsWebSocketOne((prev) => !prev);
+    };
 
     return (
         <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-40 w-full max-w-[70%]">
@@ -63,6 +71,15 @@ export const SearchBox = ({
               className="transition bg-transparent placeholder:text-white placeholder:text-lg text-lg text-white dark:text-white resize-none focus:outline-none w-full px-4 max-h-24 lg:max-h-36 xl:max-h-48 flex-grow flex-shrink"
               placeholder="Ask anything"
             />
+            <label className="relative inline-flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                checked={!isWebSocketOne}
+                onChange={handleWebSocketToggle}
+                className="sr-only peer"
+              />
+              <div className="w-11 h-6 bg-[linear-gradient(to_bottom,rgba(84,84,84,0.25)0%,rgba(186,186,186,0.25)100%)] peer-focus:ring-4 peer-focus:ring-white rounded-full peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-white/20"></div>
+            </label>
             <button
               disabled={message.trim().length === 0 || loading}
               className="bg-[linear-gradient(to_bottom,rgba(84,84,84,0.25)0%,rgba(186,186,186,0.25)100%)] text-white disabled:text-white hover:bg-white/20 transition duration-100 rounded-full p-2"
