@@ -44,7 +44,7 @@ export const SearchBox = ({
     };
 
     return (
-        <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-40 w-full max-w-[70%]">
+        <div className="fixed bottom-1 left-1/2 transform -translate-x-1/2 z-40 w-full max-w-[70%]">
           <form
             onSubmit={(e) => {
               if (loading) return;
@@ -58,8 +58,8 @@ export const SearchBox = ({
               }
             }}
             className={cn(
-              'bg-black dark:bg-black p-2 flex items-center overflow-hidden border border-borderColour1 dark:border-borderColour1',
-              mode === 'multi' ? 'flex-col rounded-lg' : 'flex-row rounded-full'
+              'bg-paper dark:bg-paper p-2 flex items-center overflow-hidden border border-charcoal dark:border-charcoal',
+              mode === 'multi' ? 'flex-col rounded-lg' : 'flex-row rounded-xl'
             )}
           >
             <TextareaAutosize
@@ -68,7 +68,7 @@ export const SearchBox = ({
               onHeightChange={(height, props) => {
                 setTextareaRows(Math.ceil(height / props.rowHeight));
               }}
-              className="transition bg-transparent placeholder:text-white placeholder:text-lg text-lg text-white dark:text-white resize-none focus:outline-none w-full px-4 max-h-24 lg:max-h-36 xl:max-h-48 flex-grow flex-shrink"
+              className="transition bg-transparent placeholder:text-subtext placeholder:text-lg text-lg text-subtext dark:text-subtext resize-none focus:outline-none w-full px-4 max-h-24 lg:max-h-36 xl:max-h-48 flex-grow flex-shrink"
               placeholder="Ask anything"
             />
             <label className="relative inline-flex items-center cursor-pointer">
@@ -82,7 +82,7 @@ export const SearchBox = ({
             </label>
             <button
               disabled={message.trim().length === 0 || loading}
-              className="bg-[linear-gradient(to_bottom,rgba(84,84,84,0.25)0%,rgba(186,186,186,0.25)100%)] text-white disabled:text-white hover:bg-white/20 transition duration-100 rounded-full p-2"
+              className="bg-mudbrown text-white disabled:text-white hover:bg-card-hover-2 transition duration-100 rounded-full p-2"
             >
               <ArrowUp size={20} />
             </button>
