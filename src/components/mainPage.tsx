@@ -332,18 +332,29 @@ export const MainPage = ({ id }: { id?: string }) => {
 
     const messageId = crypto.randomBytes(7).toString('hex');
     const selectedWs = useAster ? wsAster : ws;
-
-    (await selectedWs)?.send(
-      JSON.stringify({
-        type: 'message',
-        message: {
-          chatId: chatId,
-          content: message,
-        },
-        focusMode: focusMode,
-        history: [...chatHistory, ['human', message]],
-      }),
-    );
+    if (useAster) {
+      selectedWs?.send(
+        JSON.stringify({
+          type: 'aster_browse',
+          message: {
+            chatId: chatId,
+            content: message,
+          },
+        }
+        ))
+    } else {
+      (await selectedWs)?.send(
+        JSON.stringify({
+          type: 'message',
+          message: {
+            chatId: chatId,
+            content: message,
+          },
+          focusMode: focusMode,
+          history: [...chatHistory, ['human', message]],
+        }),
+      );
+    };
 
     setMessages((prevMessages) => [...prevMessages,
     {
@@ -449,6 +460,7 @@ export const MainPage = ({ id }: { id?: string }) => {
           );
         }
       }
+    };
 
     (await selectedWs)?.addEventListener('message', messageHandler);
   };
@@ -477,7 +489,7 @@ export const MainPage = ({ id }: { id?: string }) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isReady, initialMessage]);
-  
+
   if (hasError) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen">
@@ -486,7 +498,7 @@ export const MainPage = ({ id }: { id?: string }) => {
         </p>
       </div>
     );
-  };
+  }
 
   return (
     <div className="relative">
@@ -502,7 +514,7 @@ export const MainPage = ({ id }: { id?: string }) => {
             )}
             {isLimit ? (
               <div className={`${!session ? 'blur-sm' : ''}`}>
-                <div className="flex justify-center min-h-screen bg-light-primary bg-black">
+                <div className="flex justify-center min-h-screen bg-paper">
                   <div className="w-full max-w-screen px-4">
                     {messages.length > 0 ? (
                       <>
@@ -521,6 +533,7 @@ export const MainPage = ({ id }: { id?: string }) => {
                         toggleWebSocket={toggleWebSocket}
                         focusMode={focusMode}
                         setFocusMode={setFocusMode}
+                        userName={session?.user?.name ?? null}
                       />
                     )}
                   </div>
@@ -556,7 +569,6 @@ export const MainPage = ({ id }: { id?: string }) => {
       )}
     </div>
   );
-}
 }
 
 export default MainPage;
