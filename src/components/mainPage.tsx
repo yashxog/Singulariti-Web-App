@@ -259,7 +259,7 @@ export const MainPage = ({ id }: { id?: string }) => {
 
   const [isWSReady, setIsWsReady] = useState(false)
   const ws = useSocket(wsURL!, setIsWsReady, setHasError, session as Session);
-  const wsAster = useSocket(wsBrowseURL!, setIsWsReady, setHasError,session as Session);
+  const wsAster = useSocket(wsBrowseURL!, setIsWsReady, setHasError, session as Session);
 
   const [chatHistory, setChatHistory] = useState<[string, string][]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
