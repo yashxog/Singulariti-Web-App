@@ -7,12 +7,14 @@ import { NewAnswerPage } from "./newAnswerPage";
 import crypto from "crypto";
 import { toast } from "sonner";
 import { Document } from "@langchain/core/documents";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { getSuggestions } from "@/lib/action";
 import Error from "next/error";
 import { useSession } from "next-auth/react";
 import { SignUp } from "./signup";
-import { RateLimitReachedComponent } from "./rateLimitReached";
+import { RateLimitReachedComponent } from "./rateLimitReached"
+import { useWebSocketStore } from "@/store/webSocketStore";
+import { useSocket } from "@/hooks/useSocket";
 
 export type Message = {
   messageId: string;
@@ -55,143 +57,6 @@ type Session = {
 const wsURL = process.env.NEXT_PUBLIC_WEB_SOCKET_URL || "wss://singulariti-answer-engine-v1.onrender.com";
 const wsBrowseURL = process.env.NEXT_PUBLIC_ASTER_BROWSE_URL;
 const backendAPI = process.env.NEXT_PUBLIC_BACKEND_API_URL || "https://singulariti-answer-engine-v1.onrender.com/singulariti";
-
-const useSocket = (url: string, setIsWsReady: (ready: boolean) => void, setError: (error: boolean) => void, session: Session) => {
-  const [ws, setWs] = useState<WebSocket | null>(null);
-  const sessionRef = useRef(session);
-
-  useEffect(() => {
-    sessionRef.current = session;
-  }, [session]);
-
-
-
-  useEffect(() => {
-    if (!ws) {
-      const connectWs = async () => {
-
-        let chatModelProvider = localStorage.getItem('chatModelProvider');
-        let embeddingModelProvider = localStorage.getItem('embeddingModelProvider')
-        let chatModel = localStorage.getItem('chatModel');
-        let embeddingModel = localStorage.getItem('embeddingModel');
-
-        if (
-          !chatModelProvider ||
-          !embeddingModelProvider ||
-          !chatModel ||
-          !embeddingModel
-        ) {
-          const providers = await fetch(
-            `${backendAPI}/models`,
-            {
-              headers: {
-                'Content-Type': 'application/json',
-              },
-            },
-          ).then(async (res) => await res.json());
-
-          // const chatModelProviders = providers.chatModelProviders;
-          const embeddingModelProviders = providers.embeddingModelProviders;
-
-          chatModelProvider = Object.keys(providers.chatModelProviders)[0];
-          chatModel = Object.keys(providers.chatModelProviders[chatModelProvider])[0];
-
-          embeddingModelProvider = Object.keys(embeddingModelProviders)[0];
-          embeddingModel = Object.keys(embeddingModelProviders[embeddingModelProvider])[0];
-
-          localStorage.setItem('chatModel', chatModel!);
-          localStorage.setItem('chatModelProvider', chatModelProvider);
-          localStorage.setItem('embeddingModel', embeddingModel!);
-          localStorage.setItem('embeddingModelProvider', embeddingModelProvider);
-        }
-
-        const wsURL = new URL(url);
-        const searchParams = new URLSearchParams({});
-
-        searchParams.append('chatModel', chatModel!);
-        searchParams.append('chatModelProvider', chatModelProvider);
-
-        if (chatModelProvider === 'custom_openai') {
-          searchParams.append(
-            'openAIApiKey',
-            localStorage.getItem('openAIApiKey')!,
-          );
-          searchParams.append(
-            'openAIBaseURL',
-            localStorage.getItem('openAIBaseURL')!,
-          );
-        }
-
-        searchParams.append('embeddingModel', embeddingModel);
-        searchParams.append('embeddingModelProvider', embeddingModelProvider);
-
-        wsURL.search = searchParams.toString();
-
-        const ws = new WebSocket(wsURL.toString());
-
-        const timeoutId = setTimeout(() => {
-          if (ws.readyState !== 1) {
-            toast.error(
-              'Failed to connect to the server. Please try again later.',
-            );
-          }
-        }, 10000);
-
-        ws.onopen = () => {
-          console.log('web socket connection open');
-          clearTimeout(timeoutId);
-          setIsWsReady(true);
-
-          if (sessionRef.current?.user) {
-            ws.send(JSON.stringify({
-              type: "auth",
-              token: sessionRef.current?.jwt, // Assuming NextAuth provides an access token
-              // Do not send detailed user information here
-            }));
-          }
-        };
-
-        ws.onerror = () => {
-          clearTimeout(timeoutId);
-          setError(true);
-          toast.error('WebSocket connection error.');
-        };
-
-        ws.onclose = () => {
-          clearTimeout(timeoutId);
-          setError(true);
-          console.log('web socket connection closed');
-        };
-
-        ws.addEventListener('message', (e) => {
-          const parsedData = JSON.parse(e.data);
-          if (parsedData.type === 'error') {
-            toast.error(parsedData.data);
-          }
-
-          if (parsedData.type === 'rateLimit') {
-            toast.error(parsedData.data);
-          }
-        });
-
-        setWs(ws);
-      };
-
-      connectWs();
-    }
-  }, [ws, url, setIsWsReady, setError]);
-
-  useEffect(() => {
-    if (ws && ws.readyState === WebSocket.OPEN && session?.user) {
-      ws.send(JSON.stringify({
-        type: "auth",
-        token: session.jwt,
-      }));
-    }
-  }, [session, ws]);
-
-  return ws;
-}
 
 const loadMessages = async (
   chatId: string,
@@ -246,20 +111,21 @@ const loadMessages = async (
 export const MainPage = ({ id }: { id?: string }) => {
 
   const searchParams = useSearchParams();
+  const router = useRouter();
   const initialMessage = searchParams.get('q');
   const { data: session } = useSession()
 
   const [chatId, setChatId] = useState<string | undefined>(id);
   const [newChatCreated, setNewChatCreated] = useState(false);
-  const [hasError, setHasError] = useState(false);
+  
 
   const [isReady, setIsReady] = useState(false);
   const [isLimit, setIsLimit] = useState(true);
   const [timeLeft, setTimeLeft] = useState<string>('');
 
-  const [isWSReady, setIsWsReady] = useState(false)
-  const ws = useSocket(wsURL!, setIsWsReady, setHasError, session as Session);
-  const wsAster = useSocket(wsBrowseURL!, setIsWsReady, setHasError, session as Session);
+  const {isWSReady, hasError, useAster, toggleWebSocket} = useWebSocketStore();
+  const ws = useSocket(wsURL!, session as Session);
+  const wsAster = useSocket(wsBrowseURL!, session as Session);
 
   const [chatHistory, setChatHistory] = useState<[string, string][]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -271,7 +137,6 @@ export const MainPage = ({ id }: { id?: string }) => {
   const [isMessagesLoaded, setIsMessagesLoaded] = useState(false);
   const [notFound, setNotFound] = useState(false);
 
-
   useEffect(() => {
     if (
       chatId &&
@@ -279,6 +144,7 @@ export const MainPage = ({ id }: { id?: string }) => {
       !isMessagesLoaded &&
       messages.length === 0
     ) {
+      console.log("LOADING MESSAGE")
       loadMessages(
         chatId,
         setMessages,
@@ -288,9 +154,10 @@ export const MainPage = ({ id }: { id?: string }) => {
         setNotFound,
       );
     } else if (!chatId) {
+      const newChatId = crypto.randomBytes(20).toString('hex')
+      setChatId(newChatId)
       setNewChatCreated(true);
       setIsMessagesLoaded(true);
-      setChatId(crypto.randomBytes(20).toString('hex'));
     }
   }, []);
 
@@ -315,11 +182,7 @@ export const MainPage = ({ id }: { id?: string }) => {
     }
   }, [isMessagesLoaded, isWSReady]);
 
-  // Toggle the web socket to send message
-  const [useAster, setUseAster] = useState(false);
-  const toggleWebSocket = () => {
-    setUseAster((prev) => !prev);
-  };
+ 
 
   const sendMessage = async (message: string) => {
     if (loading) return;
@@ -331,6 +194,7 @@ export const MainPage = ({ id }: { id?: string }) => {
     let added = false;
 
     const messageId = crypto.randomBytes(7).toString('hex');
+
     const selectedWs = useAster ? wsAster : ws;
     if (useAster) {
       selectedWs?.send(
@@ -368,7 +232,6 @@ export const MainPage = ({ id }: { id?: string }) => {
 
     const messageHandler = async (e: MessageEvent) => {
       const data = JSON.parse(e.data);
-
       if (data.type === "error") {
         setLoading(false);
         toast.error(data.data);
