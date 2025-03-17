@@ -5,6 +5,7 @@ import { Inter } from "next/font/google"
 import { Toaster } from "sonner"
 import Sidebar from "@/components/sidebar";
 import { AuthProviders } from "@/providers/auth-provider";
+import { WebSocketProvider } from "@/providers/websocket-provider"
 
 const font = Inter({ subsets: ["latin"] });
 
@@ -18,31 +19,34 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="en">
       <body
         className={font.className}
       >
-      <AuthProviders>
-      <ThemeProvider
-        attribute="class"
-        defaultTheme="dark"
-        enableSystem
-        disableTransitionOnChange
-      >
-        <Sidebar>
-          {children}
-        </Sidebar>
-          <Toaster
-            toastOptions={{
-              unstyled: true,
-              classNames: {
-                toast:
-                  'bg-paper-2 text-charcoal rounded-lg p-4 flex flex-row items-center space-x-2',
-              },
-            }}
-          />
-        </ThemeProvider>
+        <AuthProviders>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <WebSocketProvider>
+              <Sidebar>
+                {children}
+              </Sidebar>
+              <Toaster
+                toastOptions={{
+                  unstyled: true,
+                  classNames: {
+                    toast:
+                      'bg-paper-2 text-charcoal rounded-lg p-4 flex flex-row items-center space-x-2',
+                  },
+                }}
+              />
+            </WebSocketProvider>
+          </ThemeProvider>
         </AuthProviders>
       </body>
     </html>

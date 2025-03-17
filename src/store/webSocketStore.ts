@@ -2,25 +2,37 @@ import { create } from 'zustand';
 
 interface WebSocketState {
   ws: WebSocket | null;
-  isWSReady: boolean;
+  asterWs: WebSocket | null;
+  isWsReady: boolean;
+  isAsterWsReady: boolean;
   hasError: boolean;
   useAster: boolean;
-  
+
   // Actions
-  setIsWsReady: (value: boolean) => void;
-  setError: (value: boolean) => void;
   toggleWebSocket: () => void;
+  setWs: (ws: WebSocket | null) => void;
+  setAsterWs: (asterWs: WebSocket | null) => void;
+  setIsWsReady: (ready: boolean, isAster: boolean) => void;
+  setError: (error: boolean) => void;
   resetError: () => void;
+  resetWs: () => void;
 }
 
 export const useWebSocketStore = create<WebSocketState>((set, get) => ({
   ws: null,
-  isWSReady: false,
+  asterWs: null,
+  isWsReady: false,
+  isAsterWsReady: false,
   hasError: false,
   useAster: false,
-
-  setIsWsReady: (value) => set({ isWSReady: value }),
-  setError: (value) => set({ hasError: value }),
   toggleWebSocket: () => set((state) => ({ useAster: !state.useAster })),
+  setWs: (ws) => set({ ws }),
+  setAsterWs: (asterWs) => set({ asterWs }),
+  setIsWsReady: (ready, isAster) => set((state) => ({
+    isWsReady: isAster ? state.isWsReady : ready,
+    isAsterWsReady: isAster ? ready : state.isAsterWsReady
+  })),
+  setError: (error) => set({ hasError: error }),
   resetError: () => set({ hasError: false }),
+  resetWs: () => set({ws: null, isWsReady: false, hasError: false, useAster: false,})
 }));

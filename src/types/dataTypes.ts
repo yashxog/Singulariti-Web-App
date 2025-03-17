@@ -1,3 +1,5 @@
+import { Document } from "@langchain/core/documents";
+
 export type Message = {
     messageId: string;
     chatId: string;

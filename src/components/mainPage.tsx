@@ -14,17 +14,8 @@ import { useSession } from "next-auth/react";
 import { SignUp } from "./signup";
 import { RateLimitReachedComponent } from "./rateLimitReached"
 import { useWebSocketStore } from "@/store/webSocketStore";
-import { useSocket } from "@/hooks/useSocket";
-
-export type Message = {
-  messageId: string;
-  chatId: string;
-  createdAt: Date;
-  content: string;
-  role: 'user' | 'assistant';
-  suggestions?: string[];
-  sources?: Document[];
-}
+import { useChatStore } from "@/store/chatStore";
+import { Message, Session } from "@/types/dataTypes";
 
 // this is just to skip error of type until we dont add chats API
 type Msg = {
@@ -35,37 +26,14 @@ type Msg = {
   }
 }
 
-type Session = {
-  accessToken: string;
-  expires: string;
-  jwt: {
-    name: string;
-    email: string;
-    id: string;
-    accessToken: string;
-    iat: number;
-    exp: number;
-  };
-  user: {
-    name: string;
-    email: string;
-    image: string;
-    id: string;
-  }
-}
+// const wsURL = process.env.NEXT_PUBLIC_WEB_SOCKET_URL;
+// const wsBrowseURL = process.env.NEXT_PUBLIC_ASTER_BROWSE_URL;
+// const backendAPI = process.env.NEXT_PUBLIC_BACKEND_API_URL;
 
-const wsURL = process.env.NEXT_PUBLIC_WEB_SOCKET_URL || "wss://singulariti-answer-engine-v1.onrender.com";
-const wsBrowseURL = process.env.NEXT_PUBLIC_ASTER_BROWSE_URL;
-const backendAPI = process.env.NEXT_PUBLIC_BACKEND_API_URL || "https://singulariti-answer-engine-v1.onrender.com/singulariti";
+const loadMessages = async (chatId: string) => {
+  const chatStore = useChatStore.getState();
 
-const loadMessages = async (
-  chatId: string,
-  setMessages: (messages: Message[]) => void,
-  setIsMessagesLoaded: (loaded: boolean) => void,
-  setChatHistory: (history: [string, string][]) => void,
-  setFocusMode: (mode: string) => void,
-  setNotFound: (notFound: boolean) => void,
-) => {
+  chatStore.setIsMessagesLoaded(false);
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/chats/${chatId}`,
     {
@@ -75,10 +43,9 @@ const loadMessages = async (
       },
     },
   );
-
   if (res.status === 404) {
-    setNotFound(true);
-    setIsMessagesLoaded(true);
+    chatStore.setNotFound(true);
+    chatStore.setIsMessagesLoaded(true);
     return;
   }
 
@@ -92,7 +59,15 @@ const loadMessages = async (
       ...(typeof msg.metaData === 'string' ? JSON.parse(msg.metaData) : msg.metaData),
     };
   }) as Message[];
-  setMessages(messages);
+
+  useChatStore.setState({
+    messages,
+    chatHistory: messages.map(msg => [msg.role, msg.content]),
+    focusMode: data.chat?.focusMode || 'webSearch',
+    chatId,
+    isMessagesLoaded: true,
+    notFound: false
+  });
 
   const history = messages.map((msg) => {
     return [msg.role, msg.content];
@@ -103,86 +78,89 @@ const loadMessages = async (
 
   document.title = messages[0].content;
 
-  setChatHistory(history);
-  setFocusMode(data.chat.focusMode);
-  setIsMessagesLoaded(true);
+  chatStore.setChatHistory(history);
+  chatStore.setFocusMode(data.chat.focusMode);
+  chatStore.setIsMessagesLoaded(true);
 };
 
+
 export const MainPage = ({ id }: { id?: string }) => {
+
+  const chatStore = useChatStore()
+  const {
+    chatId,
+    isReady,
+    isLimit,
+    timeLeft,
+    chatHistory,
+    messages,
+    loading,
+    messageAppeared,
+    focusMode,
+    isMessagesLoaded,
+    notFound,
+
+    setChatId,
+    setIsLimit,
+    setTimeLeft,
+    setLoading,
+    setMessageAppeared,
+    setFocusMode,
+    setNotFound,
+    appendMessage,
+    updateMessageContent,
+    addToChatHistory,
+    updateMessageSuggestions,
+    setIsReady,
+    resetChat,
+    initializeNewChat
+  } = useChatStore();
+
+  const { isWsReady, hasError, useAster, ws, asterWs, toggleWebSocket } = useWebSocketStore();
 
   const searchParams = useSearchParams();
   const router = useRouter();
   const initialMessage = searchParams.get('q');
-  const { data: session } = useSession()
+  const { data: session } = useSession();
+  const messagesRef = useRef(messages);
 
-  const [chatId, setChatId] = useState<string | undefined>(id);
-  const [newChatCreated, setNewChatCreated] = useState(false);
-  
-
-  const [isReady, setIsReady] = useState(false);
-  const [isLimit, setIsLimit] = useState(true);
-  const [timeLeft, setTimeLeft] = useState<string>('');
-
-  const {isWSReady, hasError, useAster, toggleWebSocket} = useWebSocketStore();
-  const ws = useSocket(wsURL!, session as Session);
-  const wsAster = useSocket(wsBrowseURL!, session as Session);
-
-  const [chatHistory, setChatHistory] = useState<[string, string][]>([]);
-  const [messages, setMessages] = useState<Message[]>([]);
-
-  const [loading, setLoading] = useState(false);
-  const [messageAppeared, setMessageAppeared] = useState(false);
-  const [focusMode, setFocusMode] = useState('webSearch');
-
-  const [isMessagesLoaded, setIsMessagesLoaded] = useState(false);
-  const [notFound, setNotFound] = useState(false);
-
+  // Handle Chat Initialization
   useEffect(() => {
-    if (
-      chatId &&
-      !newChatCreated &&
-      !isMessagesLoaded &&
-      messages.length === 0
-    ) {
-      console.log("LOADING MESSAGE")
-      loadMessages(
-        chatId,
-        setMessages,
-        setIsMessagesLoaded,
-        setChatHistory,
-        setFocusMode,
-        setNotFound,
-      );
-    } else if (!chatId) {
-      const newChatId = crypto.randomBytes(20).toString('hex')
-      setChatId(newChatId)
-      setNewChatCreated(true);
-      setIsMessagesLoaded(true);
-    }
-  }, []);
-
-  useEffect(() => {
-    return () => {
-      if (ws instanceof WebSocket && ws.readyState === WebSocket.OPEN) {
-        ws.close();
-        console.log('[DEBUG] closed');
+    const loadChat = async () => {
+      if (id) {
+        if (id !== chatId) {
+          resetChat();
+          //## resetError();
+          try {
+            await loadMessages(id);
+            setChatId(id);
+          } catch (error) {
+            setNotFound(true);
+            router.replace('/');
+          }
+        }
+      } else {
+        initializeNewChat();
       }
     };
-  }, [ws]);
 
-  const messagesRef = useRef<Message[]>([]);
+    loadChat()
+
+    return () => {
+      resetChat()
+    }
+  }, [id]);
 
   useEffect(() => {
     messagesRef.current = messages;
   }, [messages]);
 
   useEffect(() => {
-    if (isMessagesLoaded && isWSReady) {
+    if (isMessagesLoaded && isWsReady) {
       setIsReady(true);
     }
-  }, [isMessagesLoaded, isWSReady]);
+  }, [isMessagesLoaded, isWsReady]);
 
- 
 
   const sendMessage = async (message: string) => {
     if (loading) return;
@@ -195,7 +173,14 @@ export const MainPage = ({ id }: { id?: string }) => {
 
     const messageId = crypto.randomBytes(7).toString('hex');
 
-    const selectedWs = useAster ? wsAster : ws;
+    const selectedWs = useAster ? asterWs : ws;
+
+    if (!selectedWs || selectedWs.readyState !== WebSocket.OPEN) {
+      toast.error("Connection not ready");
+      setLoading(false);
+      return;
+    }
+
     if (useAster) {
       selectedWs?.send(
         JSON.stringify({
@@ -220,15 +205,13 @@ export const MainPage = ({ id }: { id?: string }) => {
       );
     };
 
-    setMessages((prevMessages) => [...prevMessages,
-    {
+    appendMessage({
       content: message,
       messageId: messageId,
       chatId: chatId!,
       role: 'user',
       createdAt: new Date(),
-    },
-    ]);
+    });
 
     const messageHandler = async (e: MessageEvent) => {
       const data = JSON.parse(e.data);
@@ -248,16 +231,14 @@ export const MainPage = ({ id }: { id?: string }) => {
       if (data.type === 'sources') {
         sources = data.data;
         if (!added) {
-          setMessages((prevMessages) => [...prevMessages,
-          {
+          appendMessage({
             content: '',
             messageId: data.messageId,
             chatId: chatId!,
             role: 'assistant',
             sources: sources,
             createdAt: new Date(),
-          },
-          ]);
+          });
           added = true;
         }
         setMessageAppeared(true);
@@ -265,40 +246,25 @@ export const MainPage = ({ id }: { id?: string }) => {
 
       if (data.type === 'message') {
         if (!added) {
-          setMessages((prevMessages) => [
-            ...prevMessages,
-            {
-              content: data.data,
-              messageId: data.messageId,
-              chatId: chatId!,
-              role: 'assistant',
-              sources: sources,
-              createdAt: new Date(),
-            },
-          ]);
+          appendMessage({
+            content: data.data,
+            messageId: data.messageId,
+            chatId: chatId!,
+            role: 'assistant',
+            sources: sources,
+            createdAt: new Date(),
+          });
           added = true;
         }
 
-        setMessages((prev) =>
-          prev.map((message) => {
-            if (message.messageId === data.messageId) {
-              return { ...message, content: message.content + data.data };
-            }
-
-            return message;
-          }),
-        );
+        updateMessageContent(data.messageId, data.data);
 
         recievedMessage += data.data;
         setMessageAppeared(true);
       }
 
       if (data.type === 'messageEnd') {
-        setChatHistory((prevHistory) => [
-          ...prevHistory,
-          ['human', message],
-          ['assistant', recievedMessage],
-        ]);
+        addToChatHistory(message, recievedMessage);
 
         (await selectedWs)?.removeEventListener('message', messageHandler);
         setLoading(false);
@@ -313,38 +279,13 @@ export const MainPage = ({ id }: { id?: string }) => {
         ) {
           const suggestions = await getSuggestions(messagesRef.current);
 
-          setMessages((prev) =>
-            prev.map((message) => {
-              if (message.messageId === lastMsg.messageId) {
-                return { ...message, suggestions: suggestions };
-              }
-              return message;
-            }),
-          );
+          updateMessageSuggestions(lastMsg.messageId, suggestions);
         }
       }
     };
 
     (await selectedWs)?.addEventListener('message', messageHandler);
   };
-
-
-  // const rewrite = (messageId: string) => {
-  // const index = messages.findIndex((msg) => msg.id === messageId);
-
-  //   if (index === -1) return;
-
-  //   const message = messages[index - 1];
-
-  //   setMessages((prev) => {
-  //     return [...prev.slice(0, messages.length > 2 ? index - 1 : 0)];
-  //   });
-  //   setChatHistory((prev) => {
-  //     return [...prev.slice(0, messages.length > 2 ? index - 1 : 0)];
-  //   });
-
-  //   sendMessage(message.content);
-  // }
 
   useEffect(() => {
     if (isReady && initialMessage) {
