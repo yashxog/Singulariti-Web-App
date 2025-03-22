@@ -1,10 +1,12 @@
 import { create } from "zustand";
 import { Message, Session } from "@/types/dataTypes";
 import crypto from "crypto";
+import { Document } from "@langchain/core/documents";
 
 interface ChatState {
   chatId?: string;
   newChatCreated: boolean;
+  waitingForFirstResponse: boolean,
   isReady: boolean;
   isLimit: boolean;
   timeLeft: string;
@@ -19,6 +21,7 @@ interface ChatState {
   // Actions
   setChatId: (chatId?: string) => void;
   setNewChatCreated: (value: boolean) => void;
+  setWaitingForFirstResponse: (waiting: boolean) => void;
   setIsReady: (value: boolean) => void;
   setIsLimit: (value: boolean) => void;
   setTimeLeft: (value: string) => void;
@@ -33,6 +36,7 @@ interface ChatState {
   setNotFound: (value: boolean) => void;
   addToChatHistory: (human: string, assistant: string) => void;
   updateMessageSuggestions: (messageId: string, suggestions: string[]) => void;
+  updateMessageSources: (messageId: string, sources: Document[] | undefined) => void;
   initializeNewChat: () => string; // New action
   resetChat: () => void; // New action
 }
@@ -40,6 +44,7 @@ interface ChatState {
 export const useChatStore = create<ChatState>((set) => ({
   chatId: undefined,
   newChatCreated: false,
+  waitingForFirstResponse: false,
   isReady: false,
   isLimit: true,
   timeLeft: '',
@@ -53,6 +58,7 @@ export const useChatStore = create<ChatState>((set) => ({
 
   setChatId: (chatId) => set({ chatId }),
   setNewChatCreated: (value) => set({ newChatCreated: value }),
+  setWaitingForFirstResponse: (waiting: boolean) => set({ waitingForFirstResponse: waiting }),
   setIsReady: (value) => set({ isReady: value }),
   setIsLimit: (value) => set({ isLimit: value }),
   setTimeLeft: (value) => set({ timeLeft: value }),
@@ -62,7 +68,7 @@ export const useChatStore = create<ChatState>((set) => ({
   updateMessageContent: (messageId, content) =>
     set((state) => ({
       messages: state.messages.map((msg) =>
-        msg.messageId === messageId ? { ...msg, content: msg.content + content } : msg
+        msg.messageId === messageId && msg.role === 'assistant' ? { ...msg, content: msg.content + content } : msg
       ),
     })),
   setLoading: (value) => set({ loading: value }),
@@ -88,6 +94,20 @@ export const useChatStore = create<ChatState>((set) => ({
         chatHistory: []
       })
       return newChatId;
+    },
+
+    updateMessageSources: (messageId: string, sources: Document[] | undefined) => {
+      set((state) => ({
+        messages: state.messages.map((message) => {
+          if (message.messageId === messageId) {
+            return {
+              ...message,
+              sources,
+            };
+          }
+          return message;
+        }),
+      }));
     },
 
     resetChat: () => set({

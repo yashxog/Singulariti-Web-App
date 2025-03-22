@@ -1,10 +1,13 @@
-import { MainPage } from '@/components/mainPage';
+// import { MainPage } from '@/components/mainPage';
+import { Suspense } from 'react';
+import { ChatPage } from '@/components/chatPage';
 
 const Page = ({ params }: { params: { chatId: string } }) => {
   return (
     <div>
-      <p>{params.chatId}</p>
-      <MainPage id={params.chatId} />
+      <Suspense>
+        <ChatPage chatId={params.chatId}/>
+      </Suspense>
     </div>
   );
 };

@@ -69,6 +69,7 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
       resetError();
       
       if (session?.user) {
+        console.log("SESSION FOUND")
         connection.send(JSON.stringify({
           type: "auth",
           token: session.jwt

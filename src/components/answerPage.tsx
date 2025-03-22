@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef, Fragment } from "react";
-import { Message } from "./mainPage";
+import { Message } from "@/types/dataTypes";
 import { ResultBox } from "./resultBox";
 import { ResultBoxLoading } from "./resultBoxLoading";
 import { SearchBox } from "./searchBox";

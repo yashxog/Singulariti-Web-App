@@ -1,6 +1,5 @@
-import { Suspense } from "react";
 import { Metadata } from "next";
-import MainPage from "@/components/mainPage";
+import {NewAnswerPageWrapper} from "@/components/newAnswerPageWrapper";
 
 export const metadata: Metadata = {
   title: "Singulariti-Playground",
@@ -9,8 +8,8 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-      <Suspense>
-        <MainPage/>
-      </Suspense>
+      <div>
+        <NewAnswerPageWrapper/>
+      </div>
   );
 }

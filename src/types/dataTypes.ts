@@ -2,7 +2,7 @@ import { Document } from "@langchain/core/documents";
 
 export type Message = {
     messageId: string;
-    chatId: string;
+    chatId: string | "";
     createdAt: Date;
     content: string;
     role: 'user' | 'assistant';

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, MutableRefObject } from "react";
-import { Message } from "./mainPage";
+import { Message } from "@/types/dataTypes";
 import { cn } from "@/lib/utils";
 import { Ellipsis, Layers3, Link, Plus } from "lucide-react";
 // import { useSpeech } from 'react-text-to-speech';
