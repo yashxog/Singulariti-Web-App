@@ -44,7 +44,7 @@ export const DeleteChat: React.FC<DeleteChatProps> = ({ chatId, chats, setChats 
     <>
       <button
         onClick={() => setConfirmationDialogOpen(true)}
-        className="bg-white px-4 text-red-400 rounded-lg hover:scale-105 transition duration-200"
+        className="bg-paper px-4 text-red-400 rounded-lg hover:scale-105 transition duration-200"
         aria-label="Delete chat"
       >
         <div className='flex flex-row justify-between items-center space-x-2'>
@@ -85,15 +85,15 @@ export const DeleteChat: React.FC<DeleteChatProps> = ({ chatId, chats, setChats 
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-custom-bg-1 dark:bg-custom-bg-1 border border-borderColour1 border-opacity-30 p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-paper-2 dark:bg-paper-2 border border-white border-opacity-30 p-6 text-left align-middle shadow-xl transition-all">
                   <Dialog.Title
                     as="h3"
-                    className="text-lg font-medium leading-6 text-gray-900 dark:text-white"
+                    className="text-lg font-medium leading-6 text-charcoal dark:text-charcoal"
                   >
                     Delete Confirmation
                   </Dialog.Title>
                   <div className="mt-2">
-                    <p className="text-sm text-gray-500 dark:text-gray-300">
+                    <p className="text-sm text-subtext dark:text-subtext">
                       Are you sure you want to delete this chat?
                     </p>
                   </div>
@@ -101,7 +101,7 @@ export const DeleteChat: React.FC<DeleteChatProps> = ({ chatId, chats, setChats 
                   <div className="mt-4 flex justify-end space-x-4">
                     <button
                       type="button"
-                      className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+                      className="text-sm text-subtext dark:text-subtext hover:text-mudbrown dark:hover:text-mudbrown"
                       onClick={() => setConfirmationDialogOpen(false)}
                       disabled={loading}
                     >
@@ -109,7 +109,7 @@ export const DeleteChat: React.FC<DeleteChatProps> = ({ chatId, chats, setChats 
                     </button>
                     <button
                       type="button"
-                      className="text-sm text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-500"
+                      className="text-sm text-red-500 hover:text-red-800 dark:text-red-500 dark:hover:text-red-800"
                       onClick={handleDelete}
                       disabled={loading}
                     >
