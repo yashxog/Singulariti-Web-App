@@ -3,7 +3,7 @@ import { PlayCircle, PlusIcon, VideoIcon } from 'lucide-react';
 import { useState } from 'react';
 import Lightbox, { GenericSlide, VideoSlide } from 'yet-another-react-lightbox';
 import 'yet-another-react-lightbox/styles.css';
-import { Message } from './mainPage';
+import { Message } from '@/types/dataTypes';
 
 type Video = {
   url: string;
@@ -37,7 +37,7 @@ export const VideoResults = ({
   const [slides, setSlides] = useState<VideoSlide[]>([]);
 
   return (
-    <div className="w-full mt-4 pl-4">
+    <div className="w-full mt-4">
       {!loading && videos === null && (
         <button
         onClick={async () => {

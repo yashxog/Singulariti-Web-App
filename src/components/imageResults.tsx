@@ -3,7 +3,7 @@ import { ImagesIcon, PlusIcon } from 'lucide-react';
 import { useState } from 'react';
 import Lightbox from 'yet-another-react-lightbox';
 import 'yet-another-react-lightbox/styles.css';
-import { Message } from './mainPage';
+import { Message } from '@/types/dataTypes';
 
 type Image = {
   url: string;
@@ -28,7 +28,7 @@ export const ImageResults = ({
   const [slides, setSlides] = useState<Slide[]>([]);
 
   return (
-    <div className="w-full pl-4">
+    <div className="w-full">
       {!loading && images === null && (
         <button
         onClick={async () => {

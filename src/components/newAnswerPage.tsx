@@ -1,4 +1,5 @@
 import { NewChatSearchBox } from "./newChatSearchBox";
+import cleanupUsername from "@/lib/usernameCleanup";
 
 export const NewAnswerPage = ({
     sendMessage,
@@ -20,7 +21,7 @@ export const NewAnswerPage = ({
                     <h2 className="text-charcoal dark:text-charcoal text-5xl font-normal text-center pb-10 leading-snug">
                         {userName
                             ? (<>
-                                 Hi, {userName.charAt(0).toUpperCase()} {userName.slice(1).toLowerCase()}
+                                 Hi, {cleanupUsername(userName)}
                                 <br />
                                 What can I do for you?
                             </>
