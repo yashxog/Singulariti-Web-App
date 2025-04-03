@@ -34,5 +34,5 @@ export const useWebSocketStore = create<WebSocketState>((set, get) => ({
   })),
   setError: (error) => set({ hasError: error }),
   resetError: () => set({ hasError: false }),
-  resetWs: () => set({ws: null, isWsReady: false, hasError: false, useAster: false,})
+  resetWs: () => set({ws: null, asterWs: null, isWsReady: false, isAsterWsReady: false, hasError: false, useAster: false,})
 }));

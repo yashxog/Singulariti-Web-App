@@ -5,10 +5,23 @@ export type Message = {
     chatId: string | "";
     createdAt: Date;
     content: string;
+    asterResponse: AgentResponse | null;
+    browserUrl: string | null,
+    messageType: 'search' | 'aster_browse'
     role: 'user' | 'assistant';
-    suggestions?: string[];
-    sources?: Document[];
+    suggestions?: string[] | null;
+    sources?: Document[] | null;
 }
+
+// export type AsterMessage = {
+//     messageId: string;
+//     chatId: string | "";
+//     createdAt: Date;
+//     agentResponse: agent_response;
+//     content: "No Content Aster Message";
+//     browserUrl: string;
+//     role: 'user' | 'assistant';
+// }
 
 export type Session = {
     accessToken: string;
@@ -29,3 +42,16 @@ export type Session = {
     }
   }
   
+export type AgentResponse = {
+  [key: string]: AgentIteration
+}
+
+export type AgentIteration = {
+  action: Array<Record<string, any>>;
+  current_state: {
+    evaluation_previous_goal: string;
+    memory: string;
+    next_goal: string;
+    reasoning?: string;
+  };
+};

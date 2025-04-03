@@ -5,6 +5,8 @@ import { Message } from "@/types/dataTypes";
 import { ResultBox } from "./resultBox";
 import { ResultBoxLoading } from "./resultBoxLoading";
 import { SearchBox } from "./searchBox";
+import { useChatStore } from "@/store/chatStore";
+import { AsterResponseLoading } from "@/components/asterResponseLoading";
 
 export const AnswerPage = ({
     loading,
@@ -22,6 +24,7 @@ export const AnswerPage = ({
     const [dividerWidth, setDividerWidth] = useState(0);
     const dividerRef = useRef<HTMLDivElement | null>(null);
     const messageEnd = useRef<HTMLDivElement | null>(null);
+    const chatStore = useChatStore();
 
     useEffect(() => {
         const updateDividerWidth = () => {
@@ -42,10 +45,16 @@ export const AnswerPage = ({
     useEffect(() => {
         messageEnd.current?.scrollIntoView({ behavior: 'smooth' });
     
-        if (messages.length === 1) {
+        if (messages.length === 1 && "content" in messages[0]) {
           document.title = `${messages[0].content.substring(0, 30)} - Singulariti`;
         }
       }, [messages]);
+
+    useEffect(() => {
+      if(!loading && messageAppeared) {
+        chatStore.setCurrentMessageType(null)
+      }
+    }, [loading, messageAppeared])
 
     return (
         <div className="flex justify-center min-h-screen bg-paper">
@@ -71,7 +80,12 @@ export const AnswerPage = ({
                   </Fragment>
                 );
               })}
-              {loading && !messageAppeared && <ResultBoxLoading />}
+              {loading && !messageAppeared && (
+                <>
+                  {chatStore.currentMessageType === "aster_browse" && <AsterResponseLoading />}
+                  {chatStore.currentMessageType === "search" && <ResultBoxLoading />}
+                </>
+              )}
               <div ref={messageEnd} className="h-0" />
             </div>
             {dividerWidth > 0 && (

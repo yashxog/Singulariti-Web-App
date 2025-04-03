@@ -48,7 +48,6 @@ export const NewAnswerPageWrapper = () => {
     
     // Redirect to the chat page
     if (newChatId) {
-      console.log(`Redirecting to /chat/${newChatId}?q=${encodeURIComponent(message)}`);
       router.push(`/chat/${newChatId}?q=${encodeURIComponent(message)}`);
     }
   };
