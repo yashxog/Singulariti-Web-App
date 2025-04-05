@@ -53,6 +53,9 @@ export const SearchBox = ({
       
       sendMessage(message);
       setMessage('');
+      // Reset to single line mode and textareaRows after sending
+      setMode('single');
+      setTextareaRows(1);
     }
   }
   
