@@ -63,6 +63,7 @@ export const createSendMessageFunction = (messagesRef: React.MutableRefObject<an
         chatStore.appendMessage({
           content: message,
           asterResponse: null,
+          asterBrowseLiveStreamUrl: null,
           messageId: messageId,
           chatId: currentChatId,
           role: 'user',
@@ -75,6 +76,7 @@ export const createSendMessageFunction = (messagesRef: React.MutableRefObject<an
         chatStore.appendMessage({
           content: message,
           asterResponse: null,
+          asterBrowseLiveStreamUrl: null,
           messageId: messageId,
           chatId: currentChatId,
           role: 'user',
@@ -115,6 +117,7 @@ export const createSendMessageFunction = (messagesRef: React.MutableRefObject<an
               chatStore.appendMessage({
                 content: '',
                 asterResponse: null,
+                asterBrowseLiveStreamUrl: null,
                 messageId: data.messageId,
                 chatId: currentChatId,
                 role: 'assistant',
@@ -134,6 +137,7 @@ export const createSendMessageFunction = (messagesRef: React.MutableRefObject<an
                 content: data.data,
                 messageId: data.messageId,
                 asterResponse: null,
+                asterBrowseLiveStreamUrl: null,
                 chatId: currentChatId,
                 role: 'assistant',
                 messageType: 'search',
@@ -154,6 +158,7 @@ export const createSendMessageFunction = (messagesRef: React.MutableRefObject<an
               chatStore.appendMessage({
                 content: "No Content Aster Message",
                 asterResponse: { Step1: data.data.agentResponse },
+                asterBrowseLiveStreamUrl: data.data.browserLiveStreamUrl,
                 messageId: data.data.messageId,
                 chatId: currentChatId,
                 role: 'assistant',

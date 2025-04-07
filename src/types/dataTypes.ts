@@ -6,6 +6,7 @@ export type Message = {
     createdAt: Date;
     content: string;
     asterResponse: AgentResponse | null;
+    asterBrowseLiveStreamUrl: string | null;
     browserUrl: string | null,
     messageType: 'search' | 'aster_browse'
     role: 'user' | 'assistant';

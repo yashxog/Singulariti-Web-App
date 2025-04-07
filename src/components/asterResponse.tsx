@@ -44,7 +44,7 @@ export const AsterResponse = ({ message, dividerRef }: { message: Message, divid
         {/* Big Box - iFrame for Streaming */}
         <div className="w-full h-[400px] border rounded-lg shadow-lg overflow-hidden">
           <iframe
-            src={message.browserUrl || "about:blank"} // Default if no browser URL
+            src={message.asterBrowseLiveStreamUrl ?? "about:blank"} // Default if no browser URL
             className="w-full h-full border-none"
             allowFullScreen
           ></iframe>
