@@ -48,7 +48,7 @@ export type AgentResponse = {
 }
 
 export type AgentIteration = {
-  action: Array<Record<string, any>>;
+  action: Array<Record<string, unknown>>;
   current_state: {
     evaluation_previous_goal: string;
     memory: string;

@@ -3,7 +3,7 @@
 import React, { useEffect, useRef } from "react";
 import { Navbar } from "./navbar";
 import { AnswerPage } from "./answerPage";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Document } from "@langchain/core/documents";
 import Error from "next/error";
 import { useSession } from "next-auth/react";
@@ -94,7 +94,7 @@ export const ChatPage = ({ chatId }: { chatId: string }) => {
 
   const chatStore = useChatStore.getState();
 
-  const { isWsReady, hasError, useAster, ws, asterWs, toggleWebSocket } = useWebSocketStore();
+  const { isWsReady, hasError, toggleWebSocket } = useWebSocketStore();
   const messagesRef = useRef(messages);
 
   const sendMessage = createSendMessageFunction(messagesRef);

@@ -49,8 +49,6 @@ export const SearchBox = ({
     
     if(message && message.trim().length > 0) {
       // Store the current useAster state before sending
-      const wasUsingAster = webSocketStore.useAster;
-      
       sendMessage(message);
       setMessage('');
       // Reset to single line mode and textareaRows after sending

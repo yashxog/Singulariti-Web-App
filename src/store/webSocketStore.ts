@@ -18,7 +18,7 @@ interface WebSocketState {
   resetWs: () => void;
 }
 
-export const useWebSocketStore = create<WebSocketState>((set, get) => ({
+export const useWebSocketStore = create<WebSocketState>((set) => ({
   ws: null,
   asterWs: null,
   isWsReady: false,

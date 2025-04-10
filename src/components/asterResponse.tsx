@@ -1,11 +1,8 @@
 import React, { MutableRefObject, useEffect, useState } from "react";
-import { motion, Variants } from "framer-motion";
 import { Message } from "@/types/dataTypes";
-import { useChatStore } from "@/store/chatStore";
 import { ShimmerText } from "@/components/ui/shimmerText";
 
 export const AsterResponse = ({ message, dividerRef }: { message: Message, dividerRef?: MutableRefObject<HTMLDivElement | null>; }) => {
-  const chatStore = useChatStore.getState();
   const [isReasoning, setIsReasoning] = useState(true);
 
   // Extract latest reasoning

@@ -1,12 +1,8 @@
-import React, { useState, useEffect, MutableRefObject } from "react";
+import React, { MutableRefObject } from "react";
 import { Message } from "@/types/dataTypes";
 import { cn } from "@/lib/utils";
-import { Ellipsis, Layers3, Link, Plus } from "lucide-react";
-// import { useSpeech } from 'react-text-to-speech';
 import { WebSearchResponse } from "./webSearchResponse";
 import { AsterResponse } from "./asterResponse";
-// import ReactMarkdown from 'react-markdown';
-// import remarkGfm from 'remark-gfm';
 
 
 

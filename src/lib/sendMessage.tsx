@@ -6,8 +6,9 @@ import { getSuggestions } from "@/lib/action";
 import { useChatStore } from "@/store/chatStore";
 import { useWebSocketStore } from "@/store/webSocketStore";
 import crypto from "crypto";
+import { Message } from "@/types/dataTypes";
 
-export const createSendMessageFunction = (messagesRef: React.MutableRefObject<any[]>) => {
+export const createSendMessageFunction = (messagesRef: React.MutableRefObject<Message[]>) => {
   return async (message: string, isNewChat = false) => {
     const chatStore = useChatStore.getState();
     const wsStore = useWebSocketStore.getState();

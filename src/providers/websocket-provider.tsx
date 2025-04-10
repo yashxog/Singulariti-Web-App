@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useWebSocketStore } from '@/store/webSocketStore';
 import { useSession } from 'next-auth/react';
-import { Session } from '@/types/dataTypes';
 import { toast } from 'sonner';
 
 const wsURL = process.env.NEXT_PUBLIC_WEB_SOCKET_URL || "wss://singulariti-answer-engine-v1.onrender.com";
