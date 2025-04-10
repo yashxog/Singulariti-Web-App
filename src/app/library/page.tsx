@@ -6,7 +6,7 @@ import { ClockIcon, LibraryIcon } from 'lucide-react';
 import Link from 'next/link';
 import { formatTimeDifference } from '@/lib/utils';
 import { DeleteChat } from '@/components/deleteChat';
-
+import { useChatStore } from '@/store/chatStore';
 export interface Chat {
   id: string;
   title: string;
@@ -17,6 +17,7 @@ const Library = () => {
   const { data: session } = useSession();
   const [chats, setChats] = useState<Chat[]>([]);
   const [loading, setLoading] = useState(true);
+  const chatStore = useChatStore();
 
   useEffect(() => {
     const fetchChats = async () => {
@@ -28,6 +29,7 @@ const Library = () => {
           const data = await response.json();
           setChats(data.chats);
           setLoading(false);
+          chatStore.resetChat();
         } catch (error) {
           console.error('Error fetching chats:', error);
         }
@@ -66,11 +68,11 @@ const Library = () => {
               <LibraryIcon className='h-9 w-9'/>
               <h2 className='font-normal text-4xl mb-10 text-left'>Library</h2>
             </div>
-            {chats.length === 0 ? (
+            {chats?.length === 0 ? (
               <p className="text-left">No chat history found.</p>
             ) : (
               <ul className='space-y-5'>
-                {chats.map((chat, i) => (
+                {chats?.map((chat, i) => (
                   <li
                     key={i}
                     className='bg-paper-2 hover:bg-card-hover-1 p-4 rounded-lg flex flex-col justify-between items-start'

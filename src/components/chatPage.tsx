@@ -103,7 +103,7 @@ export const ChatPage = ({ chatId }: { chatId: string }) => {
     const loadChat = async () => {
       
       // Only load from DB if it's not a new chat
-      if (chatId && !chatStore.newChatCreated && !chatStore.isMessagesLoaded && messages.length === 0) {
+      if (chatId && (!chatStore.newChatCreated || chatId !== chatStore.chatId) && messages.length === 0) {
         try {
           chatStore.setIsMessagesLoaded(false);
           await loadMessages(chatId);
@@ -127,7 +127,7 @@ export const ChatPage = ({ chatId }: { chatId: string }) => {
         chatStore.resetChat();
       }
     };
-  }, []);
+  }, [chatId]);
 
   // Add this useEffect to handle new chat completion
   useEffect(() => {

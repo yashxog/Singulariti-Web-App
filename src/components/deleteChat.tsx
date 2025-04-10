@@ -29,7 +29,7 @@ export const DeleteChat: React.FC<DeleteChatProps> = ({ chatId, chats, setChats 
         throw new Error('Failed to delete chat');
       }
       // Only update the local state if the delete was successful
-      setChats(chats.filter((chat) => chat.id !== chatId));
+      setChats(chats?.filter((chat) => chat.id !== chatId));
       toast.success('Chat deleted successfully');
     } catch (error) {
       console.error('Error deleting chat:', error);
