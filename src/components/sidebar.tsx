@@ -6,7 +6,7 @@ import { useSelectedLayoutSegments } from 'next/navigation';
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip"
 import Link from 'next/link';
 import Layout from './layout';
-import SingularityPlaygroundLogo from "../assets/singularitiLogo.png";
+import SingularityPlaygroundLogo from "../assets/singulariti_logo.png";
 import Image from 'next/image';
 
 

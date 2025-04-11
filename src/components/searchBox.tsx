@@ -4,7 +4,7 @@ import { ArrowUp } from 'lucide-react'
 import { cn } from "../lib/utils";
 import { useWebSocketStore } from "@/store/webSocketStore";
 import { useChatStore } from "@/store/chatStore";
-import asterCursor from "@/assets/AsterCursor.png"
+import asterCursor from "../assets/aster_cursor.png"
 
 export const SearchBox = ({
   sendMessage,

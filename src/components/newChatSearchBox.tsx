@@ -2,7 +2,7 @@ import { ArrowUp } from 'lucide-react';
 import { useEffect, useState, useRef } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
 import { ScrollingButtonsComponent } from './scrollingButtons';
-import asterCursor from '@/assets/AsterCursor.png'
+import asterCursor from '../assets/aster_cursor.png'
 
 export const NewChatSearchBox = ({
   sendMessage,
